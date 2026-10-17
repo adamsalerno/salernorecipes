@@ -3,7 +3,10 @@
     "id": "smoked-beef-cheese-sliders",
     "title": "Smoked Beef and Cheese Sliders",
     "source": "https://burntpelletbbq.com",
-    "categories": ["Beef", "Crockpot"],
+    "categories": [
+      "Beef",
+      "Crockpot"
+    ],
     "ingredients": [
       "2-2.5 lbs chuck roast",
       "Yellow mustard (binder)",
@@ -34,5 +37,33 @@
       "Bake at 350°F for 15 min."
     ],
     "notes": "Air fryer toasting: on 4 slices, 3 dark."
+  },
+  {
+    "id": "loaded-reeses-peanut-butter-dip",
+    "title": "Loaded Reese’s Peanut Butter Dip",
+    "source": "https://www.thisisnotdietfood.com/loaded-reeses-peanut-butter-dip/",
+    "categories": [
+      "Desserts"
+    ],
+    "ingredients": [
+      "8 oz cream cheese, softened",
+      "1 cup smooth peanut butter",
+      "3/4 cup brown sugar",
+      "3 tsp vanilla extract",
+      "1/4 tsp salt",
+      "2 cups Cool Whip",
+      "2/3 cup mini Reese’s Pieces",
+      "2/3 cup mini peanut butter cups, chopped",
+      "Extra mini Reese’s Pieces (topping)",
+      "Extra mini peanut butter cups, chopped (topping)"
+    ],
+    "steps": [
+      "Mix the softened cream cheese, peanut butter, brown sugar, vanilla, and salt in a large bowl with an electric mixer until fully combined.",
+      "Fold in the Cool Whip until combined.",
+      "Stir in the mini Reese’s Pieces and chopped peanut butter cups.",
+      "Transfer to a serving dish.",
+      "Top with more Reese’s Pieces and chopped peanut butter cups right before serving."
+    ],
+    "notes": "Serves 10, about 15 minutes. Serve with graham crackers, pretzels, vanilla wafers, apple slices, or strawberries. Chill 20-30 min for a thicker dip. Keeps 4 days in the fridge. Do not leave out more than 2 hours. Do not freeze."
   }
 ]
