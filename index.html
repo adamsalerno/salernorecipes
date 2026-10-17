@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Salerno Recipes">
+<title>Salerno Recipes</title>
+<style>
+:root{
+  --bg:#f5f6f2;--card:#ffffff;--ink:#1d2623;--mute:#68746f;--line:#dfe3dc;--accent:#1f5c66;--chip:#e9ede7;--onaccent:#ffffff;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#121819;--card:#1b2324;--ink:#ecf0ec;--mute:#93a09b;--line:#2b3535;--accent:#78bcc7;--chip:#232d2e;--onaccent:#0f1a1c}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) calc(40px + env(safe-area-inset-bottom,0px)) env(safe-area-inset-left,0px)}
+.wrap{max-width:640px;margin:0 auto;padding:0 18px}
+h1,h2,.title{font-family:ui-serif,"New York",Georgia,serif;font-weight:600;letter-spacing:-.01em;margin:0}
+.site{font-size:32px;padding:26px 0 14px}
+input[type=search]{width:100%;font:inherit;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);-webkit-appearance:none;appearance:none}
+input[type=search]:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:14px 18px;margin:0 -18px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;font:inherit;font-size:15px;padding:7px 14px;border-radius:999px;border:0;background:var(--chip);color:var(--ink);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--accent);color:var(--onaccent)}
+.list{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.open{flex:1;min-width:0;text-align:left;font:inherit;color:inherit;background:none;border:0;padding:14px 4px 14px 16px;cursor:pointer}
+.open .title{font-size:20px;display:block}
+.open small{color:var(--mute);font-size:14px}
+.heart{flex:none;width:48px;height:48px;border:0;background:none;font-size:24px;line-height:1;color:var(--mute);cursor:pointer}
+.heart[aria-pressed=true]{color:var(--accent)}
+.empty{color:var(--mute);padding:28px 4px;text-align:center}
+.back{font:inherit;color:var(--accent);background:none;border:0;padding:20px 0 6px;cursor:pointer}
+.rtitle{font-size:30px;line-height:1.15;padding:6px 0 4px}
+.cats{color:var(--mute);font-size:15px;margin-bottom:14px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 6px}
+.btn{font:inherit;font-size:16px;padding:10px 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;text-decoration:none;display:inline-block}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--onaccent)}
+h2{font-size:22px;margin:26px 0 8px}
+ul.ing{list-style:none;margin:0;padding:0}
+ul.ing li{padding:9px 0;border-bottom:1px solid var(--line)}
+ol.steps{margin:0;padding-left:22px}
+ol.steps li{padding:6px 0 6px 4px}
+.note{background:var(--chip);border-radius:12px;padding:12px 14px;margin-top:22px}
+.src{margin-top:22px}
+.src a{color:var(--accent)}
+label{display:block;font-weight:600;margin:18px 0 6px}
+textarea{width:100%;font:inherit;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);min-height:120px}
+.hint{color:var(--mute);font-size:14px;margin:4px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+// Adam's phone number for the "Send update" text, e.g. "+14145551234". Leave blank to pick the contact in Messages.
+const PHONE = "";
+// Order the category chips appear in. Any other category shows up after these.
+const ORDER = ["Beef","Chicken","Pork","Seafood","Pasta","Sides","Soups","Desserts","Breakfast","Drinks","Crockpot"];
+
+const app = document.getElementById("app");
+let recipes = [], cat = "All", query = "", editing = false, loaded = false, failed = false;
+let favs = new Set();
+try { favs = new Set(JSON.parse(localStorage.getItem("favs") || "[]")); } catch (e) {}
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const saveFavs = () => { try { localStorage.setItem("favs", JSON.stringify([...favs])); } catch (e) {} };
+const currentId = () => location.hash.startsWith("#r/") ? decodeURIComponent(location.hash.slice(3)) : null;
+
+function categoriesInUse() {
+  const used = new Set(recipes.flatMap(r => r.categories || []));
+  const known = ORDER.filter(c => used.has(c));
+  const extra = [...used].filter(c => !ORDER.includes(c)).sort();
+  return [...known, ...extra];
+}
+
+function renderList() {
+  document.title = "Salerno Recipes";
+  const chips = ["All"].concat(favs.size ? ["Favorites"] : [], categoriesInUse());
+  if (!chips.includes(cat)) cat = "All";
+  const q = query.trim().toLowerCase();
+  const shown = recipes.filter(r => {
+    if (cat === "Favorites" && !favs.has(r.id)) return false;
+    if (cat !== "All" && cat !== "Favorites" && !(r.categories || []).includes(cat)) return false;
+    if (!q) return true;
+    return [r.title, ...(r.categories || []), ...(r.ingredients || [])].join(" ").toLowerCase().includes(q);
+  });
+  let body;
+  if (failed) body = '<p class="empty">The recipes could not be loaded. Check your connection and reload.</p>';
+  else if (!loaded) body = '<p class="empty">Loading recipes…</p>';
+  else if (!shown.length) body = '<p class="empty">No recipes match. Try a different search or category.</p>';
+  else body = '<div class="list">' + shown.map(r => `
+    <div class="row">
+      <button class="open" data-open="${esc(r.id)}"><span class="title">${esc(r.title)}</span><small>${esc((r.categories || []).join(", "))}</small></button>
+      <button class="heart" data-fav="${esc(r.id)}" aria-pressed="${favs.has(r.id)}" aria-label="Favorite ${esc(r.title)}">${favs.has(r.id) ? "♥" : "♡"}</button>
+    </div>`).join("") + "</div>";
+  // Keep the search box (and keyboard) alive while typing: only rebuild it when missing.
+  if (!document.getElementById("q")) {
+    app.innerHTML = '<h1 class="site">Salerno Recipes</h1><input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search" autocomplete="off"><div class="chips" id="chips"></div><div id="results"></div>';
+    document.getElementById("q").addEventListener("input", e => { query = e.target.value; renderList(); });
+  }
+  document.getElementById("q").value = query;
+  document.getElementById("chips").innerHTML = chips.map(c => `<button class="chip" data-cat="${esc(c)}" aria-pressed="${c === cat}">${c === "Favorites" ? "♥ Favorites" : esc(c)}</button>`).join("");
+  document.getElementById("results").innerHTML = body;
+}
+
+function renderRecipe(r) {
+  document.title = r.title + " | Salerno Recipes";
+  const f = favs.has(r.id);
+  const url = /^https?:/.test(r.source || "") ? r.source : "https://" + (r.source || "");
+  if (editing) {
+    app.innerHTML = `
+      <button class="back" data-a="cancel">‹ Cancel</button>
+      <h1 class="rtitle">Edit ${esc(r.title)}</h1>
+      <label for="e-ing">Ingredients</label>
+      <textarea id="e-ing" rows="10">${esc((r.ingredients || []).join("\n"))}</textarea>
+      <p class="hint">One ingredient per line.</p>
+      <label for="e-steps">Steps</label>
+      <textarea id="e-steps" rows="12">${esc((r.steps || []).join("\n"))}</textarea>
+      <p class="hint">One step per line, no numbers needed.</p>
+      <label for="e-notes">Notes</label>
+      <textarea id="e-notes" rows="3">${esc(r.notes || "")}</textarea>
+      <div class="actions"><button class="btn primary" data-a="send">Text update to Adam</button></div>
+      <p class="hint">This opens Messages with your changes filled in. Tap send there.</p>`;
+    return;
+  }
+  app.innerHTML = `
+    <button class="back" data-a="back">‹ All recipes</button>
+    <h1 class="rtitle">${esc(r.title)}</h1>
+    <div class="cats">${esc((r.categories || []).join(", "))}</div>
+    <div class="actions">
+      <button class="btn" data-a="fav" aria-pressed="${f}">${f ? "♥ Favorite" : "♡ Favorite"}</button>
+      <button class="btn" data-a="copy">Copy ingredients</button>
+      <button class="btn" data-a="edit">Edit</button>
+    </div>
+    <h2>Ingredients</h2>
+    <ul class="ing">${(r.ingredients || []).map(i => `<li>${esc(i)}</li>`).join("")}</ul>
+    <h2>Steps</h2>
+    <ol class="steps">${(r.steps || []).map(s => `<li>${esc(s)}</li>`).join("")}</ol>
+    ${r.notes ? `<div class="note">${esc(r.notes)}</div>` : ""}
+    ${r.source ? `<p class="src"><a href="${esc(url)}" target="_blank" rel="noopener">View the original</a></p>` : ""}`;
+}
+
+function render() {
+  const id = currentId();
+  const r = id && recipes.find(x => x.id === id);
+  if (r) renderRecipe(r); else { editing = false; if (id && loaded) location.hash = ""; renderList(); }
+}
+
+function updateText(r) {
+  const lines = v => v.split("\n").map(s => s.trim()).filter(Boolean);
+  const ing = lines(document.getElementById("e-ing").value);
+  const steps = lines(document.getElementById("e-steps").value);
+  const notes = document.getElementById("e-notes").value.trim();
+  return `Recipe update: ${r.title}\n\nIngredients\n${ing.join("\n")}\n\nSteps\n${steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}` + (notes ? `\n\nNotes\n${notes}` : "");
+}
+
+app.addEventListener("click", e => {
+  const t = e.target.closest("button");
+  if (!t) return;
+  if (t.dataset.open) { location.hash = "#r/" + encodeURIComponent(t.dataset.open); return; }
+  if (t.dataset.cat) { cat = t.dataset.cat; renderList(); return; }
+  if (t.dataset.fav) { const id = t.dataset.fav; favs.has(id) ? favs.delete(id) : favs.add(id); saveFavs(); renderList(); return; }
+  const a = t.dataset.a, r = recipes.find(x => x.id === currentId());
+  if (a === "back") location.hash = "";
+  else if (a === "fav" && r) { favs.has(r.id) ? favs.delete(r.id) : favs.add(r.id); saveFavs(); render(); }
+  else if (a === "edit") { editing = true; render(); window.scrollTo(0, 0); }
+  else if (a === "cancel") { editing = false; render(); }
+  else if (a === "send" && r) location.href = "sms:" + PHONE + "&body=" + encodeURIComponent(updateText(r));
+  else if (a === "copy" && r) {
+    const done = () => { t.textContent = "Copied"; setTimeout(() => { t.textContent = "Copy ingredients"; }, 1800); };
+    const text = (r.ingredients || []).join("\n");
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => alert("Copy failed. Try again."));
+    else alert("Copy is not available in this browser.");
+  }
+});
+
+window.addEventListener("hashchange", () => { editing = false; render(); window.scrollTo(0, 0); });
+
+fetch("recipes.json", { cache: "no-cache" })
+  .then(res => { if (!res.ok) throw new Error(res.status); return res.json(); })
+  .then(data => { recipes = data; loaded = true; render(); })
+  .catch(() => { failed = true; render(); });
+render();
+</script>
+</body>
+</html>
