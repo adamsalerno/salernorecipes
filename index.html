@@ -60,7 +60,7 @@ textarea{width:100%;font:inherit;padding:12px;border-radius:12px;border:1px soli
 // Adam's phone number for the "Send update" text, e.g. "+14145551234". Leave blank to pick the contact in Messages.
 const PHONE = "";
 // Order the category chips appear in. Any other category shows up after these.
-const ORDER = ["Beef","Chicken","Pork","Seafood","Pasta","Sides","Soups","Desserts","Breakfast","Drinks","Crockpot"];
+const ORDER = ["Beef","Chicken","Pork","Seafood","Pasta","Sides","Soups","Desserts","Breakfast","Drinks","Crockpot","Air Fryer"];
 
 const app = document.getElementById("app");
 let recipes = [], cat = "All", query = "", editing = false, loaded = false, failed = false;
@@ -88,7 +88,7 @@ function renderList() {
     if (cat !== "All" && cat !== "Favorites" && !(r.categories || []).includes(cat)) return false;
     if (!q) return true;
     return [r.title, ...(r.categories || []), ...(r.ingredients || [])].join(" ").toLowerCase().includes(q);
-  });
+  }).sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
   let body;
   if (failed) body = '<p class="empty">The recipes could not be loaded. Check your connection and reload.</p>';
   else if (!loaded) body = '<p class="empty">Loading recipes…</p>';
