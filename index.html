@@ -52,6 +52,13 @@ ol.steps li{padding:6px 0 6px 4px}
 label{display:block;font-weight:600;margin:18px 0 6px}
 textarea{width:100%;font:inherit;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);min-height:120px}
 .hint{color:var(--mute);font-size:14px;margin:4px 0 0}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0 10px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.bar p{margin:0 0 6px;font-size:15px;color:var(--mute)}
+.bar .actions{margin:0}
+.row.off{opacity:.5}
+.tog{flex:none;margin-right:12px;font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--accent);cursor:pointer}
+.foot{text-align:center;margin:26px 0 0}
+.linkbtn{font:inherit;font-size:15px;color:var(--mute);background:none;border:0;text-decoration:underline;cursor:pointer;padding:8px}
 </style>
 </head>
 <body>
@@ -63,16 +70,19 @@ const PHONE = "";
 const ORDER = ["Beef","Chicken","Pork","Seafood","Pasta","Sides","Soups","Desserts","Breakfast","Drinks","Crockpot","Air Fryer"];
 
 const app = document.getElementById("app");
-let recipes = [], cat = "All", query = "", editing = false, loaded = false, failed = false;
+let recipes = [], sel = new Set(), tidy = false, query = "", editing = false, loaded = false, failed = false;
 let favs = new Set();
 try { favs = new Set(JSON.parse(localStorage.getItem("favs") || "[]")); } catch (e) {}
+let hidden = new Set();
+try { hidden = new Set(JSON.parse(localStorage.getItem("hidden") || "[]")); } catch (e) {}
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const saveFavs = () => { try { localStorage.setItem("favs", JSON.stringify([...favs])); } catch (e) {} };
+const saveHidden = () => { try { localStorage.setItem("hidden", JSON.stringify([...hidden])); } catch (e) {} };
 const currentId = () => location.hash.startsWith("#r/") ? decodeURIComponent(location.hash.slice(3)) : null;
 
-function categoriesInUse() {
-  const used = new Set(recipes.flatMap(r => r.categories || []));
+function categoriesInUse(list) {
+  const used = new Set(list.flatMap(r => r.categories || []));
   const known = ORDER.filter(c => used.has(c));
   const extra = [...used].filter(c => !ORDER.includes(c)).sort();
   return [...known, ...extra];
@@ -80,12 +90,14 @@ function categoriesInUse() {
 
 function renderList() {
   document.title = "Salerno Recipes";
-  const chips = ["All"].concat(favs.size ? ["Favorites"] : [], categoriesInUse());
-  if (!chips.includes(cat)) cat = "All";
+  const hiddenCount = recipes.filter(r => hidden.has(r.id)).length;
+  const pool = tidy ? recipes : recipes.filter(r => !hidden.has(r.id));
+  const chips = (favs.size ? ["Favorites"] : []).concat(categoriesInUse(pool));
+  [...sel].forEach(c => { if (!chips.includes(c)) sel.delete(c); });
   const q = query.trim().toLowerCase();
-  const shown = recipes.filter(r => {
-    if (cat === "Favorites" && !favs.has(r.id)) return false;
-    if (cat !== "All" && cat !== "Favorites" && !(r.categories || []).includes(cat)) return false;
+  const shown = pool.filter(r => {
+    if (sel.has("Favorites") && !favs.has(r.id)) return false;
+    for (const c of sel) if (c !== "Favorites" && !(r.categories || []).includes(c)) return false;
     if (!q) return true;
     return [r.title, ...(r.categories || []), ...(r.ingredients || [])].join(" ").toLowerCase().includes(q);
   }).sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
@@ -93,18 +105,23 @@ function renderList() {
   if (failed) body = '<p class="empty">The recipes could not be loaded. Check your connection and reload.</p>';
   else if (!loaded) body = '<p class="empty">Loading recipes…</p>';
   else if (!shown.length) body = '<p class="empty">No recipes match. Try a different search or category.</p>';
-  else body = '<div class="list">' + shown.map(r => `
-    <div class="row">
-      <button class="open" data-open="${esc(r.id)}"><span class="title">${esc(r.title)}</span><small>${esc((r.categories || []).join(", "))}</small></button>
-      <button class="heart" data-fav="${esc(r.id)}" aria-pressed="${favs.has(r.id)}" aria-label="Favorite ${esc(r.title)}">${favs.has(r.id) ? "♥" : "♡"}</button>
-    </div>`).join("") + "</div>";
+  else body = '<div class="list">' + shown.map(r => {
+    const id = esc(r.id), h = hidden.has(r.id);
+    if (tidy) return `<div class="row${h ? " off" : ""}"><button class="open" data-hide="${id}"><span class="title">${esc(r.title)}</span><small>${h ? "Hidden" : esc((r.categories || []).join(", "))}</small></button><button class="tog" data-hide="${id}">${h ? "Show" : "Hide"}</button></div>`;
+    return `<div class="row"><button class="open" data-open="${id}"><span class="title">${esc(r.title)}</span><small>${esc((r.categories || []).join(", "))}</small></button><button class="heart" data-fav="${id}" aria-pressed="${favs.has(r.id)}" aria-label="Favorite ${esc(r.title)}">${favs.has(r.id) ? "♥" : "♡"}</button></div>`;
+  }).join("") + "</div>";
+  if (loaded && !failed && !tidy) body += `<p class="foot"><button class="linkbtn" data-a="tidy">Hide or show recipes${hiddenCount ? " (" + hiddenCount + " hidden)" : ""}</button></p>`;
   // Keep the search box (and keyboard) alive while typing: only rebuild it when missing.
   if (!document.getElementById("q")) {
-    app.innerHTML = '<h1 class="site">Salerno Recipes</h1><input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search" autocomplete="off"><div class="chips" id="chips"></div><div id="results"></div>';
+    app.innerHTML = '<h1 class="site">Salerno Recipes</h1><input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search" autocomplete="off"><div class="chips" id="chips"></div><div id="bar"></div><div id="results"></div>';
     document.getElementById("q").addEventListener("input", e => { query = e.target.value; renderList(); });
   }
   document.getElementById("q").value = query;
-  document.getElementById("chips").innerHTML = chips.map(c => `<button class="chip" data-cat="${esc(c)}" aria-pressed="${c === cat}">${c === "Favorites" ? "♥ Favorites" : esc(c)}</button>`).join("");
+  document.getElementById("chips").innerHTML = ["All"].concat(chips).map(c => {
+    const on = c === "All" ? sel.size === 0 : sel.has(c);
+    return `<button class="chip" data-cat="${esc(c)}" aria-pressed="${on}">${c === "Favorites" ? "♥ Favorites" : esc(c)}</button>`;
+  }).join("");
+  document.getElementById("bar").innerHTML = tidy ? `<div class="bar"><p>Tap a recipe to hide or show it. ${hiddenCount} hidden.</p><div class="actions"><button class="btn primary" data-a="done">Done</button><button class="btn" data-a="sendhidden">Text hidden list to Adam</button><button class="btn" data-a="unhideall">Show all</button></div></div>` : "";
   document.getElementById("results").innerHTML = body;
 }
 
@@ -136,6 +153,7 @@ function renderRecipe(r) {
       <button class="btn" data-a="fav" aria-pressed="${f}">${f ? "♥ Favorite" : "♡ Favorite"}</button>
       <button class="btn" data-a="copy">Copy ingredients</button>
       <button class="btn" data-a="edit">Edit</button>
+      <button class="btn" data-a="hide">Hide</button>
     </div>
     <h2>Ingredients</h2>
     <ul class="ing">${(r.ingredients || []).map(i => `<li>${esc(i)}</li>`).join("")}</ul>
@@ -163,10 +181,20 @@ app.addEventListener("click", e => {
   const t = e.target.closest("button");
   if (!t) return;
   if (t.dataset.open) { location.hash = "#r/" + encodeURIComponent(t.dataset.open); return; }
-  if (t.dataset.cat) { cat = t.dataset.cat; renderList(); return; }
+  if (t.dataset.cat) { const c = t.dataset.cat; if (c === "All") sel.clear(); else if (sel.has(c)) sel.delete(c); else sel.add(c); renderList(); return; }
+  if (t.dataset.hide) { const id = t.dataset.hide; hidden.has(id) ? hidden.delete(id) : hidden.add(id); saveHidden(); renderList(); return; }
   if (t.dataset.fav) { const id = t.dataset.fav; favs.has(id) ? favs.delete(id) : favs.add(id); saveFavs(); renderList(); return; }
   const a = t.dataset.a, r = recipes.find(x => x.id === currentId());
   if (a === "back") location.hash = "";
+  else if (a === "tidy") { tidy = true; renderList(); }
+  else if (a === "done") { tidy = false; renderList(); }
+  else if (a === "unhideall") { hidden.clear(); saveHidden(); renderList(); }
+  else if (a === "sendhidden") {
+    const list = recipes.filter(x => hidden.has(x.id));
+    if (!list.length) alert("No recipes are hidden yet.");
+    else location.href = "sms:" + PHONE + "&body=" + encodeURIComponent(`Recipes to remove (${list.length}):\n` + list.map(x => `${x.id} | ${x.title}`).join("\n"));
+  }
+  else if (a === "hide" && r) { hidden.add(r.id); saveHidden(); location.hash = ""; }
   else if (a === "fav" && r) { favs.has(r.id) ? favs.delete(r.id) : favs.add(r.id); saveFavs(); render(); }
   else if (a === "edit") { editing = true; render(); window.scrollTo(0, 0); }
   else if (a === "cancel") { editing = false; render(); }

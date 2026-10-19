@@ -1,5 +1,29 @@
 [
   {
+    "id": "four-ingredient-chicken-enchilada-casserole",
+    "title": "4 Ingredient Chicken Enchilada Casserole",
+    "source": "https://www.jocooks.com/recipes/easy-chicken-enchilada-casserole/",
+    "categories": [
+      "Chicken"
+    ],
+    "ingredients": [
+      "1 pound boneless skinless chicken breasts (about 2 large)",
+      "14 ounces enchilada sauce",
+      "6 medium corn tortillas",
+      "3 cups shredded Monterey Jack cheese",
+      "Chopped green onions or cilantro, for garnish (optional)"
+    ],
+    "steps": [
+      "Cut each chicken breast into about 3 pieces. Put them in a small pot, pour the enchilada sauce over, cover, and cook on low to medium about 20 minutes until cooked through. No water needed. Stir now and then so it does not stick.",
+      "Remove the chicken and shred it with two forks. Heat the oven to 375°F.",
+      "Spread about 1/4 cup of the leftover sauce over the bottom of an 8x8-inch dish.",
+      "Layer 2 tortillas (halve them to fit), a third of the chicken, a third of the remaining sauce, and a third of the cheese. Repeat twice more for 3 layers.",
+      "Bake uncovered 20 to 30 minutes, until bubbly and the cheese is melted and browning in spots.",
+      "Rest a few minutes, garnish if you like, and serve warm."
+    ],
+    "notes": "Serves 4. Prep 15 min, cook 45 min. Rotisserie chicken (about 3 to 4 cups shredded) works too: warm it in the sauce, then layer. Make ahead: assemble, cover and refrigerate up to 24 hours (add a few minutes to the bake). Freeze before baking, then bake from frozen at 375°F for 45 to 50 minutes, covered for the first 30. Fridge leftovers keep up to 3 days. Pick a thick, flavorful enchilada sauce since it is most of the flavor."
+  },
+  {
     "id": "5-minute-nacho-cheese-sauce",
     "title": "5 Minute Nacho Cheese Sauce",
     "source": "https://www.budgetbytes.com/5-minute-nacho-cheese-sauce/",
@@ -372,6 +396,43 @@
     "notes": "Frozen veggies work in a pinch. Skip the nuts to make it nut-free. For gluten-free, use tamari or coconut aminos (go lightly with aminos)."
   },
   {
+    "id": "cheeseburger-soup",
+    "title": "Cheeseburger Soup",
+    "source": "https://www.tasteofhome.com/recipes/cheeseburger-paradise-soup",
+    "categories": [
+      "Beef",
+      "Soups"
+    ],
+    "ingredients": [
+      "1/2 pound ground beef",
+      "4 tablespoons butter, divided",
+      "3/4 cup chopped onion",
+      "3/4 cup shredded carrots",
+      "3/4 cup diced celery",
+      "1 teaspoon dried basil",
+      "1 teaspoon dried parsley flakes",
+      "1 3/4 pounds (about 4 cups) cubed peeled potatoes",
+      "3 cups chicken broth",
+      "1/4 cup all-purpose flour",
+      "8 to 16 ounces Velveeta, cubed",
+      "1 1/2 cups whole milk",
+      "3/4 teaspoon salt",
+      "1/4 to 1/2 teaspoon pepper",
+      "1/4 cup sour cream",
+      "Onion rings and thinly sliced green onions, for serving (optional)"
+    ],
+    "steps": [
+      "In a large saucepan over medium heat, cook and crumble the beef until no longer pink, 6 to 8 minutes. Drain and set the beef aside.",
+      "In the same pan, melt 1 tablespoon butter. Saute the onion, carrots, celery, basil and parsley about 10 minutes, until tender.",
+      "Add the potatoes, broth and beef. Bring to a boil, then reduce the heat and simmer covered 10 to 12 minutes, until the potatoes are tender.",
+      "Meanwhile, melt the remaining 3 tablespoons butter in a small skillet. Add the flour and cook, stirring, 3 to 5 minutes until bubbly.",
+      "Stir the flour mixture into the soup, bring to a boil, and cook and stir 2 minutes.",
+      "Reduce the heat to low. Stir in the Velveeta, milk, salt and pepper and cook until the cheese melts.",
+      "Take the pan off the heat and stir in the sour cream. Serve with onion rings and green onions if you like."
+    ],
+    "notes": "Makes 8 servings (about 2 quarts). Prep 30 min, cook 25 min. FLAG: the saved link (cheeseburger-paradise-soup) now redirects to Taste of Home's recipe titled \"Cheeseburger Soup\", so this is that recipe, not necessarily the \"Paradise\" one you saved. Use lean beef or drain well. Remove the pot from the heat before adding sour cream so it does not curdle. Do not freeze (the dairy turns grainy). Fridge leftovers keep up to 4 days. Velveeta amount is a range, 8 oz for less cheesy and 16 oz for very cheesy. Common add-ons: crumbled bacon, pickles, tomatoes."
+  },
+  {
     "id": "cheesy-scalloped-potatoes-and-ham",
     "title": "Cheesy Scalloped Potatoes and Ham",
     "source": "https://www.yellowblissroad.com/cheesy-scalloped-potatoes-and-ham/",
@@ -402,6 +463,46 @@
       "Bake 20 to 25 minutes, until bubbly. Garnish with chives and serve right away."
     ],
     "notes": "Serves 6 as a main, 8 to 10 as a side. Boiling the potatoes first is what keeps them evenly creamy. Can be baked ahead, cooled, wrapped, and refrigerated 2 to 3 days; reheat at 350°F for 25 to 35 minutes. Freezes up to 4 months. Source gives no amounts for salt and pepper."
+  },
+  {
+    "id": "chicken-lo-mein",
+    "title": "Chicken Lo Mein",
+    "source": "http://www.jocooks.com/main-courses/poultry-main-courses/chicken-lo-mein/",
+    "categories": [
+      "Chicken",
+      "Pasta"
+    ],
+    "ingredients": [
+      "1 tablespoon packed brown sugar",
+      "2 tablespoons low-sodium soy sauce",
+      "2 tablespoons dark soy sauce",
+      "1 tablespoon oyster sauce",
+      "1 teaspoon hoisin sauce",
+      "1 teaspoon ground black pepper",
+      "1 teaspoon sesame oil",
+      "1 pound boneless skinless chicken breasts, cut into small pieces",
+      "2 tablespoons soy sauce",
+      "1 teaspoon minced fresh ginger",
+      "3 cloves garlic, minced",
+      "2 tablespoons olive oil",
+      "2 tablespoons olive oil",
+      "2 cups sliced shiitake mushrooms",
+      "1 cup shredded Chinese cabbage",
+      "1 cup julienned carrots",
+      "1 large onion, chopped",
+      "16 ounces lo mein noodles (or other Asian-style noodles)",
+      "3 green onions, chopped"
+    ],
+    "steps": [
+      "Cook the noodles per the package, drain, and set aside.",
+      "Whisk all the sauce ingredients in a small bowl.",
+      "Toss the chicken with the soy sauce, ginger and garlic.",
+      "Heat 2 tablespoons olive oil in a large, very hot wok. Cook the chicken about 5 minutes until browned and no longer pink, in 2 batches if needed so it does not crowd. Move to a plate.",
+      "Add the other 2 tablespoons oil, then the mushrooms, cabbage, carrots and onion. Cook about 1 minute, tossing.",
+      "Return the chicken, add the noodles and the sauce, and toss to coat. Turn off the heat.",
+      "Garnish with green onions and serve."
+    ],
+    "notes": "Serves 6. Prep 15 min, cook 15 min. Dark soy sauce gives the color and richer flavor (regular soy works but is lighter). Spaghetti, ramen or linguine work if you have no lo mein noodles. Double the sauce if you want it saucy or plan on leftovers. Fridge leftovers keep 3 to 4 days, add a splash of water or broth when reheating. Freezing is not recommended (noodles go mushy). The saved link redirects to jocooks.com/recipes/chicken-lo-mein/."
   },
   {
     "id": "creamy-chicken-pesto-pasta",
@@ -621,6 +722,66 @@
     "notes": "Makes 12, about 25 minutes. Fridge up to 5 days; reheat in the microwave in 15 second bursts. Freezes well: cool completely, freeze on a plate, then bag; reheat in 30 second bursts. Source says the salt amount covers the pepper too, so the pepper amount is unspecified. Pepper jack instead of cheddar adds spice."
   },
   {
+    "id": "easy-shrimp-and-broccoli-stir-fry",
+    "title": "Easy Shrimp and Broccoli Stir Fry",
+    "source": "http://damndelicious.net/2015/01/16/easy-shrimp-broccoli-stir-fry/",
+    "categories": [
+      "Seafood"
+    ],
+    "ingredients": [
+      "1 tablespoon olive oil",
+      "1 1/2 pounds medium shrimp, peeled and deveined",
+      "24 ounces broccoli florets (about 5 cups)",
+      "1 green onion, thinly sliced",
+      "1 teaspoon sesame seeds",
+      "3 tablespoons reduced sodium soy sauce",
+      "2 tablespoons oyster sauce",
+      "1 tablespoon rice wine vinegar",
+      "1 tablespoon packed brown sugar",
+      "1 tablespoon freshly grated ginger",
+      "2 cloves garlic, minced",
+      "1 teaspoon sesame oil",
+      "1 teaspoon cornstarch",
+      "1 teaspoon Sriracha (optional)"
+    ],
+    "steps": [
+      "Whisk the soy sauce, oyster sauce, rice wine vinegar, brown sugar, ginger, garlic, sesame oil, cornstarch and Sriracha (if using) in a small bowl.",
+      "Heat the olive oil in a large cast iron skillet over medium-high. Cook the shrimp, stirring occasionally, until pink, 2 to 3 minutes.",
+      "Add the broccoli and cook, stirring often, until tender, 2 to 3 minutes.",
+      "Stir in the sauce until combined and slightly thickened, 1 to 2 minutes.",
+      "Serve right away, garnished with green onion and sesame seeds."
+    ],
+    "notes": "Serves 4. Prep 10 min, cook 10 min. Serve with brown rice (the rice takes longer than the dish). Many readers double the sauce. If you want the broccoli more cooked, start it first and add the shrimp after so they do not overcook."
+  },
+  {
+    "id": "fully-loaded-hasselback-potatoes",
+    "title": "Fully Loaded Hasselback Potatoes",
+    "source": "http://www.closetcooking.com/2013/10/fully-loaded-hasselback-potatoes.html",
+    "categories": [
+      "Sides"
+    ],
+    "ingredients": [
+      "4 small baking potatoes",
+      "4 tablespoons butter, sliced thinly",
+      "Salt and pepper, to taste",
+      "1 clove garlic, thinly sliced",
+      "4 strips bacon",
+      "1 cup shredded cheddar",
+      "1/4 cup sour cream",
+      "1/4 cup sliced green onions"
+    ],
+    "steps": [
+      "Heat the oven to 400°F (200°C).",
+      "Slice the potatoes thinly (about 1/8 inch) without cutting all the way through. Setting a wooden spoon or similar at the base of the potato helps stop the knife.",
+      "Put the potatoes on a baking sheet, tuck the sliced butter and garlic between a few of the cuts, and season with salt and pepper.",
+      "Roast until crispy on top and tender in the middle, about 1 hour.",
+      "Meanwhile cook the bacon until crispy and crumble it.",
+      "Sprinkle the potatoes with the cheese and bacon and return to the oven about 5 minutes, until the cheese melts. Watch them so the cheese does not melt off into the pan.",
+      "Serve topped with sour cream and green onions."
+    ],
+    "notes": "Serves 4 (a side with small potatoes, a meal with larger ones). Prep 10 min, cook 1 hr 5 min, total 1 hr 15 min. The 551 calorie figure on the page is per potato. Reader tips: slice between two chopsticks or thin cutting boards so you cannot cut through, and rinse the sliced potato to remove starch so the slices do not stick."
+  },
+  {
     "id": "garlic-butter-chicken-bites-with-lemon-asparagus",
     "title": "Garlic Butter Chicken Bites with Lemon Asparagus",
     "source": "https://www.eatwell101.com/garlic-butter-chicken-bites-asparagus-recipe",
@@ -737,6 +898,31 @@
     "notes": "Serves 6, about 30 minutes. Dry the carrots well and cut them evenly so they crisp. Air fryer: 390°F for 12 to 15 minutes, shaking halfway. Best fresh; leftovers keep 3 to 4 days and reheat at 400°F."
   },
   {
+    "id": "glazed-chicken-and-broccoli-sheet-pan-dinner",
+    "title": "Glazed Chicken and Broccoli Sheet Pan Dinner",
+    "source": "http://www.foodnetwork.com/recipes/food-network-kitchen/glazed-chicken-and-broccoli-sheet-pan-dinner",
+    "categories": [
+      "Chicken"
+    ],
+    "ingredients": [
+      "4 skin-on chicken drumsticks (about 1 pound)",
+      "3/4 pound (about 3 cups) fingerling potatoes, halved lengthwise",
+      "3 tablespoons extra-virgin olive oil",
+      "Kosher salt and freshly ground black pepper",
+      "1 medium head broccoli, cut into small florets (about 4 cups)",
+      "2 tablespoons teriyaki glaze (store-bought)"
+    ],
+    "steps": [
+      "Heat the oven to 450°F and line a rimmed baking sheet with parchment.",
+      "Put the drumsticks on one side of the sheet, spaced apart. Put the potatoes on the other side, leaving the center open for the broccoli. Drizzle the potatoes with 1 tablespoon of the oil and sprinkle with salt and pepper, tossing to coat.",
+      "Roast the drumsticks and potatoes for about 20 minutes (see notes).",
+      "Take the sheet out and put the broccoli in the center. Drizzle with the remaining 2 tablespoons oil, season lightly with salt and pepper, and toss with tongs. Brush the drumsticks all over with the teriyaki glaze.",
+      "Return to the oven and roast 20 to 25 minutes more, until the broccoli and potatoes are tender and charred in spots and the drumsticks are cooked through (the recipe says 160°F).",
+      "Divide the chicken and vegetables between two plates."
+    ],
+    "notes": "Serves 2. Total 55 min, 15 min active. FLAG: the first roast time was missing from the text I could get (the fetched version jumps from step 1 to \"20 to 25 minutes more\"). 20 minutes is from a blog that adapted this recipe, and it fits the 55 minute total, but confirm against the original if you can. The source says drumsticks are done at 160°F, USDA's guidance for poultry is 165°F, so you may want to go to 165°F. Salt and pepper amounts are not given. A blog adaptation doubled it onto two sheets with Yukon Gold potatoes and tossed the cooked broccoli in a little extra teriyaki. The saved link is a short form of the Food Network URL; the live page has -3543898 appended."
+  },
+  {
     "id": "glazed-ham-and-cheese-sliders",
     "title": "Glazed Ham and Cheese Sliders (Hawaiian Rolls)",
     "source": "https://www.thecountrycook.net/hawaiian-party-rolls/",
@@ -794,6 +980,36 @@
       "Top with the tomato basil mixture and serve right away."
     ],
     "notes": "Serves 4, about 30 minutes. The tomato topping can be made ahead and kept in the fridge. The source's written steps skip the salt, but the ingredient list calls for 1/2 teaspoon, so I added it to step 1."
+  },
+  {
+    "id": "homemade-hamburger-helper",
+    "title": "Homemade Hamburger Helper",
+    "source": "http://damndelicious.net/2015/11/08/homemade-hamburger-helper/",
+    "categories": [
+      "Beef",
+      "Pasta"
+    ],
+    "ingredients": [
+      "1 tablespoon olive oil",
+      "1 pound ground beef",
+      "Kosher salt and freshly ground black pepper, to taste",
+      "1 pound cremini mushrooms, thinly sliced",
+      "1 tablespoon tomato paste",
+      "1 tablespoon all-purpose flour",
+      "3 cups beef broth",
+      "8 ounces wide egg noodles",
+      "1/4 cup sour cream",
+      "1 teaspoon Dijon mustard",
+      "2 tablespoons chopped fresh parsley"
+    ],
+    "steps": [
+      "Heat the oil in a large stockpot or Dutch oven over medium-high. Brown the beef 3 to 5 minutes, crumbling it, and season with salt and pepper. Drain the excess fat.",
+      "Add the mushrooms and cook 3 to 4 minutes until tender and browned. Stir in the tomato paste about 1 minute until lightly browned, then the flour about 1 minute.",
+      "Stir in the beef broth and egg noodles. Bring to a boil, cover, reduce the heat, and simmer 10 to 12 minutes until the noodles are cooked.",
+      "Stir in the sour cream and Dijon until combined.",
+      "Serve right away, garnished with parsley."
+    ],
+    "notes": "Serves 4. Prep 10 min, cook 20 min, one pot. Plain Greek yogurt can replace the sour cream. Some readers found the Dijon strong and used less (about 1/2 teaspoon) or more sour cream. Peas are a popular add-in. Doubles easily."
   },
   {
     "id": "hot-chicken-philly-cheesesteak-dip",
@@ -886,6 +1102,65 @@
     "notes": "Serves 10, about 15 minutes. Serve with graham crackers, pretzels, vanilla wafers, apple slices, or strawberries. Chill 20-30 min for a thicker dip. Keeps 4 days in the fridge. Do not leave out more than 2 hours. Do not freeze."
   },
   {
+    "id": "maple-cinnamon-roasted-butternut-squash",
+    "title": "Maple Roasted Butternut Squash",
+    "source": "http://toriavey.com/toris-kitchen/2013/10/maple-cinnamon-roasted-butternut-squash/",
+    "categories": [
+      "Sides"
+    ],
+    "ingredients": [
+      "8 cups peeled, seeded butternut squash cut into 1-inch cubes (about 3 pounds of peeled cubes)",
+      "2 tablespoons extra virgin olive oil",
+      "2 tablespoons maple syrup",
+      "1/2 teaspoon salt",
+      "1/2 teaspoon cinnamon",
+      "2 pinches cayenne pepper (optional)"
+    ],
+    "steps": [
+      "Heat the oven to 425°F. Line two rimmed baking sheets with parchment or foil (optional but it makes cleanup easier).",
+      "Spread the squash in a single layer across both sheets. On each sheet, drizzle 1 tablespoon oil and 1 tablespoon maple syrup, then sprinkle 1/4 teaspoon salt, 1/4 teaspoon cinnamon and a pinch of cayenne.",
+      "Toss to coat and roast about 30 minutes, swapping the sheets between racks halfway, until the largest piece is fork-tender.",
+      "Turn on the broiler. If you used parchment, slide the squash onto the bare sheet first (parchment should not go under the broiler).",
+      "Broil each sheet 1 to 2 minutes, watching closely, until golden brown. Serve warm."
+    ],
+    "notes": "Serves 6. Prep 5 min, cook 35 min. Vegan, dairy free, gluten free. A large squash (or two smaller) of about 3 lb 3 oz whole weight gives about 8 cups of peeled cubes. It looks like a lot but it shrinks. Halves easily for two people. It browns fast under the broiler, so do not walk away. One reader found the top burned early at 425°F, so check at 15 minutes. The saved link redirects to toriavey.com/maple-cinnamon-roasted-butternut-squash/."
+  },
+  {
+    "id": "meatball-stroganoff-pasta-casserole",
+    "title": "Meatball Stroganoff Pasta Casserole",
+    "source": "https://www.pillsbury.com/recipes/meatball-stroganoff-pasta-casserole/057bca02-d59e-4fbb-8f3e-62ff7c242d45",
+    "categories": [
+      "Beef",
+      "Pasta"
+    ],
+    "ingredients": [
+      "1 bag (12 oz) uncooked extra-wide egg noodles (about 7 cups)",
+      "1/4 cup butter",
+      "2 packages (8 oz each) white mushrooms, sliced",
+      "1/2 cup chopped onion",
+      "1/4 cup all-purpose flour",
+      "1 carton (32 oz) beef broth",
+      "1 tablespoon Worcestershire sauce",
+      "1/2 teaspoon salt",
+      "1/4 teaspoon pepper",
+      "4 oz cream cheese, softened and cut into small cubes",
+      "1/4 cup heavy whipping cream",
+      "1 package (22 oz) frozen cooked beef meatballs, thawed",
+      "Chopped flat-leaf parsley, for garnish (optional)"
+    ],
+    "steps": [
+      "Heat the oven to 375°F. Spray a 13x9-inch (3-quart) baking dish with cooking spray.",
+      "Cook the noodles using the minimum time on the package, drain, and set aside.",
+      "Meanwhile, melt the butter in a 12-inch skillet over medium-high. Cook the mushrooms and onion 3 to 5 minutes, stirring now and then, until the onion is tender.",
+      "Sprinkle the flour over the mushrooms and onion and stir well. Gradually stir in the beef broth, then add the Worcestershire, salt and pepper.",
+      "Bring to a simmer, stirring occasionally, and cook 3 to 5 minutes until slightly thickened.",
+      "Whisk in the cream cheese until mostly incorporated (small bits are fine, they melt in the oven). Remove from the heat and stir in the cream.",
+      "In the baking dish, combine the noodles, sauce and meatballs, mixing to coat.",
+      "Cover and bake 30 to 35 minutes, until bubbling and heated through. Stir, cool 10 minutes, stir again before serving, and garnish with parsley."
+    ],
+    "notes": "Serves 10. Prep 30 min, total 1 hr 15 min. Stirring before serving spreads the sauce evenly. Good with a green vegetable or side salad. The original uses Progresso beef flavored broth, but any beef broth works."
+  },
+  {
     "id": "moroccan-chicken",
     "title": "Moroccan Chicken",
     "source": "https://www.landolakes.com/recipe/19121/moroccan-chicken/",
@@ -912,6 +1187,38 @@
       "Serve right away over rice or couscous."
     ],
     "notes": "Serves 4, about 25 minutes. Uses cinnamon sugar butter spread, a specific product; if you can't find it, use regular butter with a pinch of cinnamon and sugar (my substitution, not from the source)."
+  },
+  {
+    "id": "mushroom-asiago-chicken",
+    "title": "Mushroom Asiago Chicken",
+    "source": "http://everydaydishes.com/simple-food-recipes/mushroom-asiago-chicken/",
+    "categories": [
+      "Chicken"
+    ],
+    "ingredients": [
+      "1 pound boneless, skinless chicken breasts",
+      "Salt and pepper, for the cutlets (no amount given)",
+      "1/2 cup all-purpose flour",
+      "4 tablespoons unsalted butter, divided",
+      "1 pound mushrooms, sliced",
+      "1/2 teaspoon salt",
+      "3 cloves garlic, minced",
+      "1/2 cup dry white wine (or chicken broth)",
+      "3/4 cup low-sodium chicken broth",
+      "3 teaspoons fresh thyme (sprigs), or dried thyme (see notes)",
+      "1/2 cup heavy cream",
+      "1/2 cup shredded Asiago cheese",
+      "Parmesan cheese, for sprinkling"
+    ],
+    "steps": [
+      "Cut each chicken breast into cutlets. Lightly season both sides with salt and pepper and dredge in flour, shaking off the excess.",
+      "Melt about 2 tablespoons butter in a large skillet over medium-high. Cook the cutlets in batches (do not crowd) about 5 minutes until golden on the first side, flip and cook 1 more minute. Move to a plate and cover loosely with foil.",
+      "Add the remaining butter, the mushrooms and 1/2 teaspoon salt to the skillet. Cook about 10 minutes, stirring now and then, until golden and softened. Add the garlic and cook 2 more minutes.",
+      "Pour in the wine (or 1/2 cup broth) and scrape up the browned bits. When it has nearly all evaporated, add the 3/4 cup broth and thyme. Boil, then reduce to medium and cook at a rapid simmer 10 to 15 minutes until reduced by half.",
+      "Reduce the heat to medium-low and stir in the cream. Sprinkle in the Asiago and stir constantly until it melts. Nestle the chicken back in and simmer just until heated through and the sauce slightly thickens.",
+      "Sprinkle with Parmesan and serve, plain or over pasta or mashed potatoes."
+    ],
+    "notes": "Serves 5 to 6. Prep 15 min, cook 35 min (about 50 total). Be patient with the reduction step, the sauce should be down by half before the chicken goes back in. FLAG: the thyme line reads \"3 tsp fresh thyme, sprigs, or 3/4 dried thyme leaves\" with no unit on the dried amount, so I assumed 3/4 teaspoon dried, confirm if you can. Any mushroom works (button or cremini). Sherry, port or marsala can replace the wine. Readers double the sauce when serving over pasta, and add spinach, bacon or kale. Salt and pepper for the cutlets have no amount in the source."
   },
   {
     "id": "oatmeal-cinnamon-french-toast",
@@ -971,6 +1278,99 @@
     "notes": "Serves 4. Leftovers keep up to 4 days. Chicken freezes well but the potatoes do not. If the potatoes aren't done when the chicken is, quarter them next time. Don't have 7 spice? Swap in Italian seasoning, Cajun or lemon pepper."
   },
   {
+    "id": "one-pot-cheesy-chicken-broccoli-rice-casserole",
+    "title": "One Pot Cheesy Chicken Broccoli Rice Casserole",
+    "source": "https://www.jocooks.com/recipes/one-pot-cheesy-chicken-broccoli-rice-casserole/",
+    "categories": [
+      "Chicken"
+    ],
+    "ingredients": [
+      "1 tablespoon olive oil",
+      "1 small onion, chopped",
+      "2 chicken breasts, cut into small cubes",
+      "1/4 teaspoon salt",
+      "1/4 teaspoon black pepper",
+      "4 cloves garlic, minced",
+      "3/4 cup uncooked long grain rice",
+      "10 ounces cream of chicken soup (1 can)",
+      "2 cups low-sodium chicken broth, plus more if needed",
+      "2 cups broccoli florets",
+      "1 cup shredded cheddar cheese, divided",
+      "1 tablespoon chopped fresh parsley"
+    ],
+    "steps": [
+      "Heat the oil in a large oven-proof skillet over medium. Cook the onion and chicken about 5 minutes, until the chicken browns a bit and is no longer pink. Season with salt and pepper.",
+      "Stir in the garlic and cook about 30 seconds.",
+      "Add the rice, cream of chicken soup and 2 cups broth. Bring to a boil, then reduce the heat, cover, and cook on medium (stirring now and then) about 15 minutes, until the rice is cooked. Add more broth if the rice needs it.",
+      "Stir in the broccoli and half the cheese and cook 2 more minutes, until the broccoli softens a little.",
+      "Sprinkle the rest of the cheese on top and put the skillet under the broiler a couple of minutes, until melted and starting to brown.",
+      "Garnish with parsley and serve."
+    ],
+    "notes": "Serves 6. Prep 10 min, cook 20 min. Use long grain rice (basmati or jasmine). Needs a tight-fitting lid so the rice steams. If it gets too thick, stir in a splash of broth or milk. Rotisserie chicken works: add it with the broccoli. Leftovers keep 3 to 4 days in the fridge or 2 months frozen. The source lists the soup as 10 ounces (1 can); a standard can is often 10.5 oz, which works fine. Stove-only is fine if you skip the broiler step."
+  },
+  {
+    "id": "one-pot-wonder-chicken-lo-mein",
+    "title": "One Pot Chicken Lo Mein",
+    "source": "http://thewholesomedish.com/one-pot-wonder-chicken-lo-mein/",
+    "categories": [
+      "Chicken",
+      "Pasta"
+    ],
+    "ingredients": [
+      "1/2 pound boneless skinless chicken breast, cut into small chunks",
+      "1 pound box linguini or fettuccini, broken in half",
+      "4 medium carrots, peeled and cut into thin 3-inch strips",
+      "1 medium red bell pepper, cut into thin 3-inch strips",
+      "1 bunch green onions, white parts sliced and green parts cut into 3-inch strips",
+      "4 cloves garlic, minced",
+      "1/4 cup soy sauce",
+      "1 teaspoon garlic powder",
+      "1 teaspoon corn starch",
+      "1 tablespoon sugar",
+      "1/2 teaspoon red pepper flakes",
+      "4 cups chicken or vegetable broth",
+      "2 teaspoons extra virgin olive oil"
+    ],
+    "steps": [
+      "Put the chicken in a large stockpot, then the pasta, then all the remaining ingredients. Cover.",
+      "Bring to a rolling boil over high heat, stir, and reduce the heat to medium-low.",
+      "Cook covered about 15 minutes, stirring occasionally, until most of the liquid is gone and the chicken is cooked through.",
+      "Remove the lid and let it rest 5 minutes before serving."
+    ],
+    "notes": "Serves 6. Prep 15 min, cook 20 min. One pot, uncooked pasta. Vegetarian: use vegetable broth and skip the chicken. Whole wheat pasta works. Some readers found the vegetables went mushy and the dish a little bland, so they cut carrots and peppers thicker, or added salt and hoisin. Ramen or rice noodles are a more traditional swap. Add extra broth if you add more vegetables."
+  },
+  {
+    "id": "oven-baked-pork-chops",
+    "title": "Oven Baked Pork Chops",
+    "source": "https://www.africanbites.com/oven-baked-pork-chops/",
+    "categories": [
+      "Pork"
+    ],
+    "ingredients": [
+      "4 bone-in pork chops, 1/2 to 3/4 inch thick",
+      "Salt and pepper, to taste",
+      "2 tablespoons canola oil",
+      "1 tablespoon Creole seasoning",
+      "1 1/2 teaspoons minced fresh thyme",
+      "1 tablespoon minced garlic",
+      "1/2 tablespoon Dijon mustard",
+      "1 teaspoon Worcestershire sauce",
+      "2-3 tablespoons brown sugar",
+      "2 tablespoons chopped parsley, for garnish",
+      "1 pound potatoes, cut into 1-inch cubes",
+      "1 pound asparagus, green beans and/or carrots"
+    ],
+    "steps": [
+      "Heat the oven to 400°F with a rack in the center. Line a baking sheet with foil or parchment and lightly oil or spray it.",
+      "Pat the pork chops dry and season with salt and pepper.",
+      "Mix the Creole seasoning, thyme, garlic, Dijon, Worcestershire, brown sugar and oil. Coat the chops and marinate about 30 minutes, then drain and set them on the baking sheet.",
+      "Toss the potatoes (and the other vegetables) with salt, oil and Creole seasoning. Arrange them next to the chops.",
+      "Bake 18 to 22 minutes, until the thickest part of the chops reads 145°F.",
+      "If you like, broil 2 to 3 minutes to caramelize the tops. Garnish with parsley and serve."
+    ],
+    "notes": "Serves 4. Prep 10 min, cook 20 min. Boneless chops of the same thickness take 15 to 19 minutes. Thicker chops need more time. If the potatoes are not done when the chops are, take the chops out and keep roasting the potatoes. Cut the potatoes small so they cook evenly. Salt and pepper amounts are not given (to taste). The single 2 tablespoons of oil is listed once and not split between the marinade and the vegetables. The recipe card's steps only mention seasoning the potatoes, but the blog text says to season the vegetables the same way, so the steps above do both."
+  },
+  {
     "id": "pan-seared-halibut-with-lemon-butter-sauce",
     "title": "Pan Seared Halibut with Lemon Butter Sauce",
     "source": "https://www.wholesomeyum.com/pan-seared-halibut-recipe/",
@@ -1001,6 +1401,32 @@
     "notes": "Serves 4, about 15 to 20 minutes. Fish is done at 135 to 140°F. A non-stick pan works best. Keep the heat low for the sauce; several reviewers had it burn or split when the pan was too hot. Other white fish (cod, haddock, snapper) work too. Best fresh; leftovers keep 3 to 4 days."
   },
   {
+    "id": "paprika-chicken-spinach-white-wine-butter-thyme-sauce",
+    "title": "Paprika Chicken & Spinach with White Wine Butter Thyme Sauce",
+    "source": "http://thekitchenpaper.com/paprika-chicken-spinach-white-wine-butter-thyme-sauce/",
+    "categories": [
+      "Chicken"
+    ],
+    "ingredients": [
+      "2 large chicken breasts (boneless, skinless)",
+      "1 teaspoon paprika",
+      "Salt and pepper (about 1/4 teaspoon each for seasoning the chicken, more to taste at the end)",
+      "5 tablespoons butter",
+      "1/4 cup fresh thyme leaves",
+      "3 large garlic cloves, minced",
+      "1 cup dry white wine",
+      "2 handfuls spinach (chopped if the pieces are large)"
+    ],
+    "steps": [
+      "Rub the chicken evenly on both sides with the paprika and season with about 1/4 teaspoon each of salt and pepper.",
+      "Melt 1 tablespoon butter in a large skillet over medium-high heat and add the chicken. Cook the first side 3 minutes until golden, flip, and turn the heat to medium or slightly lower. Cook 3 more minutes, then add the remaining butter, thyme and garlic.",
+      "Cook, stirring the thyme and garlic around, about 2 minutes, then add the wine.",
+      "Bring the wine to a gentle simmer, uncovered, and cook 20 minutes. It will reduce, so add more wine if needed. Leave the chicken in the skillet.",
+      "Add the spinach and let it wilt fully. Season with salt and pepper, check that the chicken is cooked through, and serve with a grain of your choice."
+    ],
+    "notes": "Yield 2 to 4 servings. Prep 5 min, cook 30 min. Butter can be partly or fully replaced with olive oil (author did about half and half). Use fresh thyme, dried is about 1/3 the amount but changes the dish a lot. Strip the leaves off the woody stems. The sauce is thin and buttery, not creamy or thick. There is no cream in the recipe. Readers who wanted it thicker added 1/3 to 1/2 cup half and half or a cornstarch slurry. Several readers found the chicken dry or the sauce runny with a big pan, so use a pan where the wine comes partway up the chicken, and check the chicken early. Chicken stock plus a squeeze of lemon works if you want to skip the wine. Good with rice, potatoes, polenta or a green vegetable. Mushrooms are a popular add-in."
+  },
+  {
     "id": "parmesan-pasta-with-broccoli-and-mushrooms",
     "title": "Parmesan Pasta with Broccoli and Mushrooms",
     "source": "https://iowagirleats.com/mushroom-broccoli-parmesan-noodles/",
@@ -1024,6 +1450,187 @@
       "Add the broccoli and plenty of seasoned salt and pepper, stir once more, and serve."
     ],
     "notes": "Serves 6, about 30 minutes. Spread the mushrooms out so they brown instead of steaming. The seasoned salt amounts aren't given; the source links a homemade recipe for it. Any pasta works."
+  },
+  {
+    "id": "peach-glazed-chicken",
+    "title": "Peach Glazed Chicken",
+    "source": "https://www.mrfood.com/Chicken/Peach-Glazed-Chicken-564",
+    "categories": [
+      "Chicken"
+    ],
+    "ingredients": [
+      "1/4 cup all-purpose flour",
+      "4 boneless, skinless chicken breast halves (1 to 1 1/2 pounds each, as listed)",
+      "2 tablespoons butter",
+      "1 (20-ounce) package frozen sliced peaches",
+      "1 1/2 cups firmly packed light brown sugar",
+      "2 celery stalks, finely chopped",
+      "1 small onion, chopped",
+      "1/2 red bell pepper, chopped",
+      "2 tablespoons lemon juice",
+      "3/4 teaspoon cayenne pepper",
+      "1/2 teaspoon salt"
+    ],
+    "steps": [
+      "Put the flour in a shallow dish and coat the chicken breasts completely.",
+      "Melt the butter in a large skillet over medium-high heat. Brown the chicken 2 to 3 minutes per side, then move to a platter.",
+      "Add the remaining ingredients (peaches, brown sugar, celery, onion, bell pepper, lemon juice, cayenne, salt) to the skillet and cook 4 to 5 minutes, until the peaches thaw and the sauce begins to thicken.",
+      "Return the chicken to the skillet and cook 8 to 10 minutes, until no pink remains and the sauce has thickened."
+    ],
+    "notes": "Serves 4. Cook time 20 min. Serve over hot cooked rice to catch the sauce. The source lists the chicken as 4 breast halves of 1 to 1 1/2 pounds each, which is likely a typo for ounces, so size is not certain. 1 1/2 cups brown sugar is as written, a reader says you can use less. No pepper amount besides cayenne."
+  },
+  {
+    "id": "penne-in-creamy-vodka-tomato-sauce-with-mushrooms",
+    "title": "Penne Pasta in Creamy Vodka Tomato Sauce with Mushrooms",
+    "source": "http://juliasalbum.com/2015/03/penne-pasta-in-creamy-vodka-tomato-sauce-with-mushrooms/",
+    "categories": [
+      "Pasta"
+    ],
+    "ingredients": [
+      "1 tablespoon olive oil",
+      "1/2 medium onion, diced",
+      "4 garlic cloves, minced",
+      "14 oz canned tomatoes",
+      "3/4 cup vodka",
+      "1/2 teaspoon crushed red pepper",
+      "1 teaspoon basil (use more if fresh)",
+      "1/2 teaspoon oregano",
+      "1 cup sliced mushrooms",
+      "1/2 cup heavy cream",
+      "1/2 cup half and half",
+      "3/4 teaspoon salt, or more to taste",
+      "8 oz penne pasta (gluten-free brown rice penne works)",
+      "1/4 cup freshly shredded Parmesan cheese"
+    ],
+    "steps": [
+      "In a large skillet over medium heat, saute the onion and garlic in the olive oil until the onion softens.",
+      "Off the heat, add the tomatoes (break them up if needed), vodka, crushed red pepper, basil and oregano and mix.",
+      "Bring gently to medium heat, then reduce to low and simmer covered, stirring occasionally, about 20 minutes until the sauce thickens. Add the mushrooms for the last 10 minutes.",
+      "On low heat, stir in the heavy cream and half and half. Season with 3/4 teaspoon salt or more.",
+      "Meanwhile, cook the pasta per the package, rinse in cold water and drain. Add it to the sauce and heat through on low.",
+      "Serve each plate topped with freshly grated Parmesan."
+    ],
+    "notes": "Serves 4. Prep 10 min, cook 20 min. The source just says \"canned tomatoes\" (14 oz) without saying diced, crushed or whole. The step says to break them up if needed, so whole or diced would fit. One reader found 3/4 cup vodka too strong and the sauce runny, another said the sauce got better and the vodka mellowed when made a day ahead. Another reader sauteed the mushrooms with the onion and let the cream thicken longer. Chicken is a nice addition."
+  },
+  {
+    "id": "penne-with-sweet-summer-vegetables-pine-nuts-and-herbs",
+    "title": "Penne with Sweet Summer Vegetables, Pine Nuts, and Herbs",
+    "source": "http://food52.com/recipes/18440-penne-with-sweet-summer-vegetables-pine-nuts-and-herbs",
+    "categories": [
+      "Pasta"
+    ],
+    "ingredients": [
+      "2 pints cherry tomatoes",
+      "2 ears corn, shucked, kernels cut off",
+      "2 large zucchini or summer squash, halved lengthwise and cut into 1/2-inch slices",
+      "1 large red onion, chopped",
+      "2 cloves garlic, crushed",
+      "4 tablespoons olive oil, divided (3 tablespoons and 1 tablespoon)",
+      "8 ounces penne or farfalle pasta",
+      "1/3 cup torn basil leaves",
+      "1 tablespoon fresh oregano leaves",
+      "Coarse salt and black pepper, to taste",
+      "1/4 cup pine nuts (optional)"
+    ],
+    "steps": [
+      "Heat the oven to 450°F and set a pot of water on to boil.",
+      "Toss the tomatoes, squash, onion and garlic with 3 tablespoons olive oil and season well with salt and pepper. Keep the corn separate. Spread the vegetables (not the corn) on baking sheets and roast 35 to 40 minutes until sweet, golden and slightly caramelized, without tossing them much.",
+      "Add the corn to the pans for the last 15 minutes of roasting.",
+      "If using pine nuts, toast them gently in a large dry pan over medium heat, stirring constantly, and remove as soon as they turn golden.",
+      "Cook the pasta until tender but slightly al dente. Drain, return to the pot, and reserve a little cooking water.",
+      "Add the roasted vegetables, the remaining 1 tablespoon olive oil and a bit of the cooking water to the pasta. Toss in the basil and oregano and serve, topped with pine nuts."
+    ],
+    "notes": "Serves 4. Meatless. Roast the tomatoes whole, they collapse as they cook. Onion can be a large dice or large slices. Several readers say the tomatoes release a lot of liquid, so roast them on a separate sheet so everything caramelizes instead of steaming. Readers also like a pound of pasta for a better veg to pasta ratio (the recipe uses 8 oz), goat cheese or feta, a splash of balsamic, and extra garlic. Use dry (egg-free) pasta for vegan, or gluten-free pasta for gluten-free. A few readers noted the squash and tomato sizes were not described in the original, which the author clarified in the comments."
+  },
+  {
+    "id": "roasted-cornish-game-hens",
+    "title": "Roasted Cornish Game Hens",
+    "source": "http://www.foodnetwork.com/recipes/patrick-and-gina-neely/roasted-cornish-game-hens-recipe.html",
+    "categories": [
+      "Chicken"
+    ],
+    "ingredients": [
+      "6 Cornish game hens (about 1 to 1 1/2 pounds each), rinsed and dried thoroughly",
+      "2 tablespoons olive oil",
+      "1 tablespoon salt",
+      "2 tablespoons lemon pepper",
+      "1 tablespoon dried basil",
+      "1 tablespoon poultry seasoning",
+      "1 large green bell pepper, diced",
+      "2 stalks celery, diced",
+      "1 large onion, diced"
+    ],
+    "steps": [
+      "Heat the oven to 375°F.",
+      "Stir the salt, lemon pepper, dried basil and poultry seasoning together in a small bowl.",
+      "Rub the olive oil all over the hens and season each with the salt mixture.",
+      "Set the hens on a baking sheet with plenty of space between them (use 2 pans if needed).",
+      "Loosely stuff each cavity with some of the green pepper, celery and onion.",
+      "Roast about 1 hour, until an instant-read thermometer in the thickest part of the thigh reads 165°F and the juices run clear.",
+      "Tent loosely with foil and rest 10 minutes before carving or serving."
+    ],
+    "notes": "Serves 6. Ready in about 1 hr 20 min. Recipe by Patrick and Gina Neely (Down Home with the Neelys). FLAG: the Food Network page itself did not come up, so this is taken from two copies that credit the Neelys and Food Network (Food.com and a local-grown recipe page). The amounts matched across both. Tips from the source: put a wire rack on the sheet pan (line the pan with foil under it for easy cleanup), do not crowd the hens or the skin will not crisp and they take longer. The vegetables in the cavity flavor the meat as it cooks. Easy to cut down for fewer hens."
+  },
+  {
+    "id": "roasted-potatoes-and-kielbasa",
+    "title": "Roasted Potatoes and Kielbasa",
+    "source": "https://natashaskitchen.com/roasted-potatoes-and-kielbasa/",
+    "categories": [
+      "Pork",
+      "Sides"
+    ],
+    "ingredients": [
+      "3 pounds small red potatoes, cut into 1/4-inch rings",
+      "2 tablespoons light olive oil or other high-heat oil",
+      "2 tablespoons minced fresh parsley (or 1/2 tablespoon dried)",
+      "1 teaspoon sea salt",
+      "2 garlic cloves, pressed",
+      "1 pound kielbasa or other sausage, cut into 3/4-inch rings"
+    ],
+    "steps": [
+      "Heat the oven to 400°F and line a large baking sheet with parchment.",
+      "Cut the potatoes into rings about 1/4 inch thick (halve or quarter tiny ones). Slice the kielbasa into 3/4-inch rings.",
+      "Toss the potatoes and kielbasa with the parsley, garlic, salt and oil.",
+      "Spread on the baking sheet and bake 40 to 45 minutes, stirring halfway, until the potatoes are browned and crisp.",
+      "Garnish with more parsley and serve warm."
+    ],
+    "notes": "Serves 4 as dinner. Prep 5 min, cook about 50 min. No need to peel the potatoes. If the sausage is lean, add it halfway through so it does not burn. Use a big enough pan so the potatoes crisp instead of steaming. A reader reported 40 minutes was too long in their oven, so check early. The source does not say whether kielbasa is pork or beef, so the Pork tag is an assumption (Polish kielbasa is usually pork)."
+  },
+  {
+    "id": "shepherds-pie-potato-skins",
+    "title": "Shepherd's Pie Potato Skins",
+    "source": "http://www.recipetineats.com/shepherds-pie-potato-skins/",
+    "categories": [
+      "Beef"
+    ],
+    "ingredients": [
+      "250 g / 8 oz lamb or beef mince (ground meat)",
+      "1 tablespoon olive oil",
+      "1/2 onion, diced",
+      "1 clove garlic, minced",
+      "1 1/2 cups frozen mixed vegetables (peas, corn, carrots) or fresh",
+      "2 tablespoons flour",
+      "1 cup beef stock/broth (or 1 bouillon cube dissolved in hot water)",
+      "1/2 cup water",
+      "1/2 teaspoon salt",
+      "1/2 teaspoon dried thyme",
+      "1/2 teaspoon dried oregano",
+      "Black pepper",
+      "4 large potatoes, scrubbed clean (about 400 g / 13 oz each)",
+      "1/2 to 1 cup milk",
+      "2 tablespoons butter (optional but recommended)",
+      "Salt, to taste"
+    ],
+    "steps": [
+      "Heat the oven to 350°F (180°C).",
+      "Prick each potato about 6 times with a fork and microwave on high 5 minutes, turn, and microwave 5 more minutes until a knife slides in.",
+      "Cut the tops off the potatoes and scoop out the centers, leaving a thin skin (about 1/4 inch). Mash the scooped potato with the milk, butter and salt until smooth. If you want to pipe it, put the mash in a bag with a large star tip.",
+      "For the filling: heat the olive oil in a large pan over medium-high. Saute the onion and garlic 2 minutes. Turn the heat to high, add the meat and cook about 3 minutes, breaking it up, until browned.",
+      "Sprinkle over the flour and stir. Add the vegetables, stock, water, salt, thyme, oregano and pepper, bring to a simmer, and stir about 2 minutes until the sauce is thick and glossy. Take off the heat.",
+      "Fill each potato with a slightly heaped amount of filling and press it in. Pipe or spoon the mashed potato on top and fluff it with a fork (you will not use all of it).",
+      "Bake 15 to 20 minutes, until the mash browns on the ridges. Serve right away."
+    ],
+    "notes": "Serves 4. Prep 5 min, cook 10 min (15 total, plus baking in the oven). Meat is lamb for traditional shepherd's pie, beef makes a cottage pie. Potatoes can be baked instead of microwaved (about 40 to 50 minutes at 350°F). In a hurry, skip the bake and brown the top under the broiler, but baking lets the filling flavor develop. Freezes well, best frozen after baking, reheat about 20 minutes at 350°F. Parmesan on the mash adds crunch. Some readers found it a bit bland or the filling greyish and added Worcestershire sauce."
   },
   {
     "id": "smoked-beef-cheese-sliders",
@@ -1065,6 +1672,39 @@
     "notes": "Air fryer toasting: on 4 slices, 3 dark."
   },
   {
+    "id": "spaghetti-alla-primavera",
+    "title": "Spaghetti Alla Primavera",
+    "source": "http://www.saveur.com/article/Recipes/Classic-Spaghetti-Primavera",
+    "categories": [
+      "Pasta"
+    ],
+    "ingredients": [
+      "6 tablespoons olive oil",
+      "3 cloves garlic, minced",
+      "6 ounces button mushrooms, quartered",
+      "1 cup asparagus tips, blanched",
+      "1 cup small broccoli florets, blanched",
+      "1/2 cup frozen peas, blanched",
+      "1 small zucchini, quartered lengthwise, cut into 1-inch lengths, blanched",
+      "1 pound spaghetti, cooked al dente",
+      "1 cup heavy cream",
+      "2/3 cup grated Parmesan",
+      "2 tablespoons unsalted butter",
+      "Kosher salt and pepper, to taste",
+      "1 cup grape tomatoes, halved",
+      "2 tablespoons thinly shredded basil",
+      "1/2 cup lightly toasted pine nuts"
+    ],
+    "steps": [
+      "Blanch the asparagus, broccoli, peas and zucchini ahead of time, and cook the spaghetti al dente.",
+      "Heat 5 tablespoons of the oil in a 12-inch skillet over medium. Add two thirds of the garlic and cook until golden, about 2 minutes. Add the mushrooms and cook until golden, about 3 minutes.",
+      "Add the asparagus, broccoli, peas and zucchini and cook 3 minutes.",
+      "Add the pasta, cream, Parmesan and butter, season with salt and pepper, toss to combine, and transfer to a platter.",
+      "Bring the remaining oil and garlic, the tomatoes and the basil to a simmer over medium heat. Pour over the pasta and garnish with pine nuts."
+    ],
+    "notes": "Serves 4 to 6. The recipe is Sirio Maccioni's from Le Cirque (Saveur). The source says the vegetables are \"blanched\" but gives no times, so cook each until just crisp-tender. Salt and pepper have no amount. The saved link redirects to saveur.com/article/Recipes/Classic-Spaghetti-Primavera/."
+  },
+  {
     "id": "stove-top-beef-stew",
     "title": "Stove Top Beef Stew",
     "source": "https://iowagirleats.com/beef-stew/",
@@ -1102,5 +1742,69 @@
       "Adjust the salt and pepper, add the peas, and simmer 2 minutes. Remove the bay leaves and serve over mashed potatoes."
     ],
     "notes": "Serves 6, about 4 hours. Chop the vegetables very fine so they melt into the gravy. Freezes well; thaw in the fridge and reheat on the stove."
+  },
+  {
+    "id": "swedish-meatballs",
+    "title": "The Best Swedish Meatballs",
+    "source": "https://therecipecritic.com/the-best-swedish-meatballs/",
+    "categories": [
+      "Beef"
+    ],
+    "ingredients": [
+      "1 pound ground beef",
+      "1/4 cup panko bread crumbs",
+      "1 tablespoon chopped parsley",
+      "1/4 teaspoon ground allspice",
+      "1/4 teaspoon ground nutmeg",
+      "1/4 cup finely chopped onion",
+      "1/2 teaspoon garlic powder",
+      "1/8 teaspoon pepper",
+      "1/2 teaspoon salt",
+      "1 egg",
+      "1 tablespoon olive oil",
+      "1 tablespoon butter",
+      "4 tablespoons butter (for the sauce)",
+      "3 tablespoons flour",
+      "2 cups beef broth (low sodium works well)",
+      "1 cup heavy cream",
+      "1 tablespoon Worcestershire sauce",
+      "1 teaspoon Dijon mustard",
+      "Salt and pepper, to taste"
+    ],
+    "steps": [
+      "Mix the beef, panko, parsley, allspice, nutmeg, onion, garlic powder, pepper, salt and egg until combined.",
+      "Roll into 12 large or 20 small meatballs.",
+      "Heat the olive oil and 1 tablespoon butter in a large skillet over medium-high. Cook the meatballs 7 to 8 minutes, turning, until browned and cooked through. Move to a plate and cover with foil.",
+      "Add 4 tablespoons butter and the flour to the same skillet and whisk until it turns brown.",
+      "Slowly whisk in the beef broth and cream, then add the Worcestershire and Dijon. Simmer until the sauce thickens, and season with salt and pepper.",
+      "Return the meatballs to the skillet and simmer 1 to 2 minutes. Serve over egg noodles or mashed potatoes."
+    ],
+    "notes": "Serves 6. Prep 10 min, cook 20 min. No panko: blend 2 slices of bread to crumbs and mix with 1/4 cup milk. To skip pan-searing, broil the meatballs on a sprayed sheet pan 5 to 7 minutes, flip, then 4 to 5 more minutes, and pour the drippings into the sauce pan. Cooked meatballs freeze up to 3 months. Do not freeze the cream sauce, it separates."
+  },
+  {
+    "id": "unstuffed-pepper-casserole",
+    "title": "Unstuffed Pepper Casserole",
+    "source": "https://www.pillsbury.com/recipes/unstuffed-pepper-casserole/efedd02d-f663-4166-97f1-03b8c031140a",
+    "categories": [
+      "Pork"
+    ],
+    "ingredients": [
+      "1 pound bulk hot Italian sausage",
+      "2 medium red, yellow or green bell peppers, cut into 3/4-inch pieces (about 2 cups)",
+      "1/2 cup chopped onion",
+      "2 cloves garlic, chopped",
+      "1 can (14.5 oz) diced tomatoes with Italian herbs",
+      "1 bag (10 oz) frozen cooked white rice",
+      "2 cups shredded Cheddar cheese (8 oz), divided"
+    ],
+    "steps": [
+      "Heat the oven to 375°F.",
+      "In a 12-inch skillet over medium-high, cook the sausage, peppers, onion and garlic 8 to 10 minutes, stirring now and then, until the sausage is no longer pink. Drain.",
+      "Return the mixture to the skillet and stir in the tomatoes, rice and 1 cup of the cheese.",
+      "Pour into an ungreased 13x9-inch (3-quart) glass baking dish and cover with foil.",
+      "Bake 15 to 20 minutes, until the cheese is melted.",
+      "Uncover, sprinkle with the remaining 1 cup cheese, and bake uncovered 4 to 6 minutes more, until melted."
+    ],
+    "notes": "Serves 6. Prep 20 min, total 40 min. Use sweet Italian sausage for a milder dish. The original calls for Muir Glen organic diced tomatoes with Italian herbs, but any can of that size works. No salt or pepper in the source."
   }
 ]
