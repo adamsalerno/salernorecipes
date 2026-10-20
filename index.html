@@ -22,10 +22,19 @@ body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 -apple-system,
 h1,h2,.title{font-family:ui-serif,"New York",Georgia,serif;font-weight:600;letter-spacing:-.01em;margin:0}
 .site{font-size:32px;padding:26px 0 14px}
 input[type=search]{width:100%;font:inherit;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);-webkit-appearance:none;appearance:none}
+input[type=search]{padding-right:44px}
+input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none;display:none}
+.search{position:relative}
+.clear{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;background:none;color:var(--mute);font-size:20px;line-height:1;cursor:pointer}
+.clear[hidden]{display:none}
+.count{color:var(--mute);font-size:14px;margin:0 2px 10px}
 input[type=search]:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:14px 18px;margin:0 -18px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;font:inherit;font-size:15px;padding:7px 14px;border-radius:999px;border:0;background:var(--chip);color:var(--ink);cursor:pointer}
+.selrow{display:flex;flex-wrap:wrap;gap:8px;padding:14px 0 0}
+.selrow:empty{display:none;padding:0}
+.chip.ghost{background:none;border:1px solid var(--line);color:var(--mute)}
 .chip[aria-pressed=true]{background:var(--accent);color:var(--onaccent)}
 .list{display:flex;flex-direction:column;gap:10px}
 .row{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px}
@@ -105,7 +114,7 @@ function renderList() {
   if (failed) body = '<p class="empty">The recipes could not be loaded. Check your connection and reload.</p>';
   else if (!loaded) body = '<p class="empty">Loading recipes…</p>';
   else if (!shown.length) body = '<p class="empty">No recipes match. Try a different search or category.</p>';
-  else body = '<div class="list">' + shown.map(r => {
+  else body = '<p class="count">' + (shown.length === pool.length ? pool.length : shown.length + " of " + pool.length) + (pool.length === 1 ? " recipe" : " recipes") + '</p><div class="list">' + shown.map(r => {
     const id = esc(r.id), t = esc(r.title);
     const main = `<button class="open" data-open="${id}"><span class="title">${t}</span><small>${esc((r.categories || []).join(", "))}</small></button>`;
     if (showHidden) return `<div class="row off">${main}<button class="tog" data-hide="${id}">Restore</button></div>`;
@@ -113,13 +122,18 @@ function renderList() {
   }).join("") + "</div>";
   // Keep the search box (and keyboard) alive while typing: only rebuild it when missing.
   if (!document.getElementById("q")) {
-    app.innerHTML = '<h1 class="site">Salerno Recipes</h1><input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search" autocomplete="off"><div class="chips" id="chips"></div><div id="bar"></div><div id="results"></div>';
+    app.innerHTML = '<h1 class="site">Salerno Recipes</h1><div class="search"><input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search" autocomplete="off"><button type="button" class="clear" id="clr" data-a="clearq" aria-label="Clear search" hidden>✕</button></div><div class="selrow" id="selrow"></div><div class="chips" id="chips"></div><div id="bar"></div><div id="results"></div>';
     document.getElementById("q").addEventListener("input", e => { query = e.target.value; renderList(); });
   }
   document.getElementById("q").value = query;
+  document.getElementById("clr").hidden = !query;
+  const labelFor = c => c === "Favorites" ? "♥ Favorites" : c === "Hidden" ? "Hidden (" + hiddenList.length + ")" : esc(c);
+  document.getElementById("selrow").innerHTML = sel.size
+    ? [...sel].map(c => `<button class="chip" data-cat="${esc(c)}" aria-pressed="true" aria-label="Remove filter ${esc(c)}">${labelFor(c)} ✕</button>`).join("") + (sel.size > 1 ? '<button class="chip ghost" data-cat="All">Clear all</button>' : "")
+    : "";
   document.getElementById("chips").innerHTML = ["All"].concat(chips).map(c => {
     const on = c === "All" ? sel.size === 0 : sel.has(c);
-    const label = c === "Favorites" ? "♥ Favorites" : c === "Hidden" ? "Hidden (" + hiddenList.length + ")" : esc(c);
+    const label = labelFor(c);
     return `<button class="chip" data-cat="${esc(c)}" aria-pressed="${on}">${label}</button>`;
   }).join("");
   document.getElementById("bar").innerHTML = showHidden ? `<div class="bar"><p>${hiddenList.length} hidden. Restore any you want to keep, then text the rest to Adam.</p><div class="actions"><button class="btn primary" data-a="sendhidden">Text hidden list to Adam</button><button class="btn" data-a="unhideall">Restore all</button></div></div>` : "";
@@ -186,7 +200,8 @@ app.addEventListener("click", e => {
   if (t.dataset.hide) { const id = t.dataset.hide; hidden.has(id) ? hidden.delete(id) : hidden.add(id); saveHidden(); renderList(); return; }
   if (t.dataset.fav) { const id = t.dataset.fav; favs.has(id) ? favs.delete(id) : favs.add(id); saveFavs(); renderList(); return; }
   const a = t.dataset.a, r = recipes.find(x => x.id === currentId());
-  if (a === "back") location.hash = "";
+  if (a === "clearq") { query = ""; renderList(); document.getElementById("q").focus(); }
+  else if (a === "back") location.hash = "";
   else if (a === "unhideall") { hidden.clear(); saveHidden(); renderList(); }
   else if (a === "sendhidden") {
     const list = recipes.filter(x => hidden.has(x.id));
