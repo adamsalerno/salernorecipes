@@ -115,12 +115,14 @@ function renderList() {
   const pool = showHidden ? hiddenList : recipes.filter(r => !hidden.has(r.id));
   const chips = (favs.size ? ["Favorites"] : []).concat(categoriesInUse(recipes), hiddenList.length ? ["Hidden"] : []);
   if (loaded) [...sel].forEach(c => { if (!chips.includes(c)) sel.delete(c); });
-  const q = query.trim().toLowerCase();
+  // Every word must match somewhere (any order); a trailing "s" is ignored so "sliders" finds "slider".
+  const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean).map(t => t.length > 3 && /[^s]s$/.test(t) ? t.slice(0, -1) : t);
   const shown = pool.filter(r => {
     if (sel.has("Favorites") && !favs.has(r.id)) return false;
     for (const c of sel) if (c !== "Favorites" && c !== "Hidden" && !(r.categories || []).includes(c)) return false;
-    if (!q) return true;
-    return [r.title, ...(r.categories || []), ...(r.ingredients || [])].join(" ").toLowerCase().includes(q);
+    if (!terms.length) return true;
+    const hay = [r.title, ...(r.categories || []), ...(r.ingredients || [])].join(" ").toLowerCase();
+    return terms.every(t => hay.includes(t));
   }).sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
   let body;
   if (failed) body = '<p class="empty">The recipes could not be loaded. Check your connection and reload.</p>';
