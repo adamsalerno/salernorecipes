@@ -21,6 +21,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 -apple-system,
 .wrap{max-width:640px;margin:0 auto;padding:0 18px}
 h1,h2,.title{font-family:ui-serif,"New York",Georgia,serif;font-weight:600;letter-spacing:-.01em;margin:0}
 .site{font-size:32px;padding:26px 0 14px}
+.top{display:flex;align-items:center;justify-content:space-between}
+.refresh{flex:none;width:44px;height:44px;margin-top:12px;border:0;background:none;color:var(--accent);font-size:26px;line-height:1;cursor:pointer}
 input[type=search]{width:100%;font:inherit;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);-webkit-appearance:none;appearance:none}
 input[type=search]{padding-right:44px}
 input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none;display:none}
@@ -84,6 +86,16 @@ try { favs = new Set(JSON.parse(localStorage.getItem("favs") || "[]")); } catch 
 let hidden = new Set();
 try { hidden = new Set(JSON.parse(localStorage.getItem("hidden") || "[]")); } catch (e) {}
 
+let draft = null;
+try { draft = JSON.parse(localStorage.getItem("draft") || "null"); } catch (e) {}
+const saveUI = () => { try { localStorage.setItem("ui", JSON.stringify({ q: query, sel: [...sel], editing, hash: location.hash })); } catch (e) {} };
+const saveDraft = () => {
+  const g = id => document.getElementById(id);
+  if (!editing || !g("e-ing")) return;
+  draft = { id: currentId(), ing: g("e-ing").value, steps: g("e-steps").value, notes: g("e-notes").value };
+  try { localStorage.setItem("draft", JSON.stringify(draft)); } catch (e) {}
+};
+const clearDraft = () => { draft = null; try { localStorage.removeItem("draft"); } catch (e) {} };
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const saveFavs = () => { try { localStorage.setItem("favs", JSON.stringify([...favs])); } catch (e) {} };
 const saveHidden = () => { try { localStorage.setItem("hidden", JSON.stringify([...hidden])); } catch (e) {} };
@@ -102,7 +114,7 @@ function renderList() {
   const showHidden = sel.has("Hidden");
   const pool = showHidden ? hiddenList : recipes.filter(r => !hidden.has(r.id));
   const chips = (favs.size ? ["Favorites"] : []).concat(categoriesInUse(recipes), hiddenList.length ? ["Hidden"] : []);
-  [...sel].forEach(c => { if (!chips.includes(c)) sel.delete(c); });
+  if (loaded) [...sel].forEach(c => { if (!chips.includes(c)) sel.delete(c); });
   const q = query.trim().toLowerCase();
   const shown = pool.filter(r => {
     if (sel.has("Favorites") && !favs.has(r.id)) return false;
@@ -122,7 +134,7 @@ function renderList() {
   }).join("") + "</div>";
   // Keep the search box (and keyboard) alive while typing: only rebuild it when missing.
   if (!document.getElementById("q")) {
-    app.innerHTML = '<h1 class="site">Salerno Recipes</h1><div class="search"><input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search" autocomplete="off"><button type="button" class="clear" id="clr" data-a="clearq" aria-label="Clear search" hidden>✕</button></div><div class="selrow" id="selrow"></div><div class="chips" id="chips"></div><div id="bar"></div><div id="results"></div>';
+    app.innerHTML = '<div class="top"><h1 class="site">Salerno Recipes</h1><button class="refresh" data-a="refresh" aria-label="Refresh">↻</button></div><div class="search"><input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search" autocomplete="off"><button type="button" class="clear" id="clr" data-a="clearq" aria-label="Clear search" hidden>✕</button></div><div class="selrow" id="selrow"></div><div class="chips" id="chips"></div><div id="bar"></div><div id="results"></div>';
     document.getElementById("q").addEventListener("input", e => { query = e.target.value; renderList(); });
   }
   document.getElementById("q").value = query;
@@ -138,6 +150,7 @@ function renderList() {
   }).join("");
   document.getElementById("bar").innerHTML = showHidden ? `<div class="bar"><p>${hiddenList.length} hidden. Restore any you want to keep, then text the rest to Adam.</p><div class="actions"><button class="btn primary" data-a="sendhidden">Text hidden list to Adam</button><button class="btn" data-a="unhideall">Restore all</button></div></div>` : "";
   document.getElementById("results").innerHTML = body;
+  saveUI();
 }
 
 function renderRecipe(r) {
@@ -145,17 +158,18 @@ function renderRecipe(r) {
   const f = favs.has(r.id);
   const url = /^https?:/.test(r.source || "") ? r.source : "https://" + (r.source || "");
   if (editing) {
+    const d = draft && draft.id === r.id ? draft : null;
     app.innerHTML = `
       <button class="back" data-a="cancel">‹ Cancel</button>
       <h1 class="rtitle">Edit ${esc(r.title)}</h1>
       <label for="e-ing">Ingredients</label>
-      <textarea id="e-ing" rows="10">${esc((r.ingredients || []).join("\n"))}</textarea>
+      <textarea id="e-ing" rows="10">${esc(d ? d.ing : (r.ingredients || []).join("\n"))}</textarea>
       <p class="hint">One ingredient per line.</p>
       <label for="e-steps">Steps</label>
-      <textarea id="e-steps" rows="12">${esc((r.steps || []).join("\n"))}</textarea>
+      <textarea id="e-steps" rows="12">${esc(d ? d.steps : (r.steps || []).join("\n"))}</textarea>
       <p class="hint">One step per line, no numbers needed.</p>
       <label for="e-notes">Notes</label>
-      <textarea id="e-notes" rows="3">${esc(r.notes || "")}</textarea>
+      <textarea id="e-notes" rows="3">${esc(d ? d.notes : (r.notes || ""))}</textarea>
       <div class="actions"><button class="btn primary" data-a="send">Text update to Adam</button></div>
       <p class="hint">This opens Messages with your changes filled in. Tap send there.</p>`;
     return;
@@ -181,7 +195,7 @@ function renderRecipe(r) {
 function render() {
   const id = currentId();
   const r = id && recipes.find(x => x.id === id);
-  if (r) renderRecipe(r); else { editing = false; if (id && loaded) location.hash = ""; renderList(); }
+  if (r) { renderRecipe(r); saveUI(); } else { if (loaded) editing = false; if (id && loaded) location.hash = ""; renderList(); }
 }
 
 function updateText(r) {
@@ -210,9 +224,10 @@ app.addEventListener("click", e => {
   }
   else if (a === "hide" && r) { if (hidden.has(r.id)) { hidden.delete(r.id); saveHidden(); render(); } else { hidden.add(r.id); saveHidden(); location.hash = ""; } }
   else if (a === "fav" && r) { favs.has(r.id) ? favs.delete(r.id) : favs.add(r.id); saveFavs(); render(); }
-  else if (a === "edit") { editing = true; render(); window.scrollTo(0, 0); }
-  else if (a === "cancel") { editing = false; render(); }
-  else if (a === "send" && r) location.href = "sms:" + PHONE + "&body=" + encodeURIComponent(updateText(r));
+  else if (a === "edit") { clearDraft(); editing = true; render(); window.scrollTo(0, 0); }
+  else if (a === "cancel") { clearDraft(); editing = false; render(); }
+  else if (a === "refresh") location.reload();
+  else if (a === "send" && r) { const body = updateText(r); clearDraft(); location.href = "sms:" + PHONE + "&body=" + encodeURIComponent(body); }
   else if (a === "copy" && r) {
     const done = () => { t.textContent = "Copied"; setTimeout(() => { t.textContent = "Copy ingredients"; }, 1800); };
     const text = (r.ingredients || []).join("\n");
@@ -221,12 +236,34 @@ app.addEventListener("click", e => {
   }
 });
 
+app.addEventListener("input", e => { if (e.target.id && e.target.id.startsWith("e-")) saveDraft(); });
+
 window.addEventListener("hashchange", () => { editing = false; render(); window.scrollTo(0, 0); });
+
+// Restore where you were if the phone discarded the page while it was in the background.
+try {
+  const u = JSON.parse(localStorage.getItem("ui") || "null");
+  if (u) {
+    query = u.q || "";
+    (u.sel || []).forEach(c => sel.add(c));
+    if (!location.hash && u.hash) history.replaceState(null, "", u.hash);
+    editing = !!u.editing && u.hash === location.hash;
+  }
+} catch (e) {}
+
+// Show the last-known recipes instantly, then check for fresh ones in the background.
+let cached = null;
+try { cached = localStorage.getItem("recipesCache"); if (cached) { recipes = JSON.parse(cached); loaded = true; } } catch (e) { cached = null; }
 
 fetch("recipes.json", { cache: "no-cache" })
   .then(res => { if (!res.ok) throw new Error(res.status); return res.json(); })
-  .then(data => { recipes = data; loaded = true; render(); })
-  .catch(() => { failed = true; render(); });
+  .then(data => {
+    const wasLoaded = loaded, fresh = JSON.stringify(data);
+    recipes = data; loaded = true; failed = false;
+    try { localStorage.setItem("recipesCache", fresh); } catch (e) {}
+    if (!wasLoaded || (fresh !== cached && !editing)) render();
+  })
+  .catch(() => { if (!loaded) { failed = true; render(); } });
 render();
 </script>
 </body>
