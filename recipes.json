@@ -2145,6 +2145,32 @@
     "notes": "Serves 6. Prep 10 min, cook 20 min. No panko: blend 2 slices of bread to crumbs and mix with 1/4 cup milk. To skip pan-searing, broil the meatballs on a sprayed sheet pan 5 to 7 minutes, flip, then 4 to 5 more minutes, and pour the drippings into the sauce pan. Cooked meatballs freeze up to 3 months. Do not freeze the cream sauce, it separates."
   },
   {
+    "id": "tn-pasta",
+    "title": "TN Pasta",
+    "source": "",
+    "categories": [
+      "Pasta",
+      "Pork"
+    ],
+    "ingredients": [
+      "Penne noodles (amount not given)",
+      "1 pound sweet Italian sausage",
+      "1 large sweet onion, sliced into rings and halved",
+      "2 bell peppers (1 orange and 1 red), sliced",
+      "A couple cloves of garlic, chopped",
+      "Olive oil (amount not given, \"a decent amount\" for cooking the vegetables, plus a little more at the end if needed)"
+    ],
+    "steps": [
+      "Boil water for the penne.",
+      "Cook the sausage. Place it on a plate and don't rinse out the pan.",
+      "Slice the onion into rings, then cut the rings in half. Slice the orange and red bell peppers. Chop the garlic.",
+      "In the same pan, cook the onions and peppers in a decent amount of olive oil for about 5 minutes.",
+      "Add the garlic.",
+      "Leave everything in the pan, add the cooked penne and the sausage, and sprinkle with a little more olive oil if needed."
+    ],
+    "notes": "Source and serving size not given."
+  },
+  {
     "id": "twice-baked-sweet-potatoes-walnut-streusel",
     "title": "Twice Baked Sweet Potatoes with Walnut Streusel",
     "source": "https://www.atlantajewishtimes.com/twice-baked-sweet-potatoes-with-walnut-streusel/",
