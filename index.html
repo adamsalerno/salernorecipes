@@ -185,12 +185,11 @@ function renderRecipe(r) {
     return;
   }
   app.innerHTML = `
-    <button class="back" data-a="back">‹ All recipes</button>
+    <div class="top"><button class="back" data-a="back">‹ All recipes</button><button class="refresh" data-a="share" aria-label="Share this recipe">${SHARE_ICON}</button></div>
     <h1 class="rtitle">${esc(r.title)}</h1>
     <div class="cats">${esc((r.categories || []).join(", "))}</div>
     <div class="actions">
       <button class="btn" data-a="fav" aria-pressed="${f}">${f ? "♥ Favorite" : "♡ Favorite"}</button>
-      <button class="btn" data-a="share">Share</button>
       <button class="btn" data-a="copy">Copy ingredients</button>
       <button class="btn" data-a="edit">Edit</button>
       <button class="btn" data-a="hide">${hidden.has(r.id) ? "Restore" : "Hide"}</button>
