@@ -2505,5 +2505,31 @@
       "Store in an airtight container."
     ],
     "notes": "Makes a big batch (the source gives no serving count). Sweet and buttery rather than savory. Candy corn is optional if you find it too sweet; the mix still works with just the cereal, pretzels, Bugles and Reese's Pieces. Add the candy only after the mix has cooled so it doesn't melt. Good for party favors in small treat bags. The source also links a caramel corn version (Scarecrow Crunch)."
+  },
+  {
+    "id": "tn-pasta",
+    "title": "TN Pasta",
+    "source": "",
+    "categories": [
+      "Pasta",
+      "Pork"
+    ],
+    "ingredients": [
+      "Penne noodles (amount not given)",
+      "1 pound sweet Italian sausage",
+      "1 large sweet onion, sliced into rings and halved",
+      "2 bell peppers (1 orange and 1 red), sliced",
+      "A couple cloves of garlic, chopped",
+      "Olive oil (amount not given, \"a decent amount\" for cooking the vegetables, plus a little more at the end if needed)"
+    ],
+    "steps": [
+      "Boil water for the penne.",
+      "Cook the sausage. Place it on a plate and don't rinse out the pan.",
+      "Slice the onion into rings, then cut the rings in half. Slice the orange and red bell peppers. Chop the garlic.",
+      "In the same pan, cook the onions and peppers in a decent amount of olive oil for about 5 minutes.",
+      "Add the garlic.",
+      "Leave everything in the pan, add the cooked penne and the sausage, and sprinkle with a little more olive oil if needed."
+    ],
+    "notes": "Source and serving size not given."
   }
 ]
