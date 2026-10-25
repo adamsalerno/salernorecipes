@@ -2145,32 +2145,6 @@
     "notes": "Serves 6. Prep 10 min, cook 20 min. No panko: blend 2 slices of bread to crumbs and mix with 1/4 cup milk. To skip pan-searing, broil the meatballs on a sprayed sheet pan 5 to 7 minutes, flip, then 4 to 5 more minutes, and pour the drippings into the sauce pan. Cooked meatballs freeze up to 3 months. Do not freeze the cream sauce, it separates."
   },
   {
-    "id": "tn-pasta",
-    "title": "TN Pasta",
-    "source": "",
-    "categories": [
-      "Pasta",
-      "Pork"
-    ],
-    "ingredients": [
-      "Penne noodles (amount not given)",
-      "1 pound sweet Italian sausage",
-      "1 large sweet onion, sliced into rings and halved",
-      "2 bell peppers (1 orange and 1 red), sliced",
-      "A couple cloves of garlic, chopped",
-      "Olive oil (amount not given, \"a decent amount\" for cooking the vegetables, plus a little more at the end if needed)"
-    ],
-    "steps": [
-      "Boil water for the penne.",
-      "Cook the sausage. Place it on a plate and don't rinse out the pan.",
-      "Slice the onion into rings, then cut the rings in half. Slice the orange and red bell peppers. Chop the garlic.",
-      "In the same pan, cook the onions and peppers in a decent amount of olive oil for about 5 minutes.",
-      "Add the garlic.",
-      "Leave everything in the pan, add the cooked penne and the sausage, and sprinkle with a little more olive oil if needed."
-    ],
-    "notes": "Source and serving size not given."
-  },
-  {
     "id": "twice-baked-sweet-potatoes-walnut-streusel",
     "title": "Twice Baked Sweet Potatoes with Walnut Streusel",
     "source": "https://www.atlantajewishtimes.com/twice-baked-sweet-potatoes-with-walnut-streusel/",
@@ -2502,5 +2476,34 @@
       "Let rest 2 minutes before eating, since the cheese and sauce hold a lot of heat. Slice if desired, or eat whole."
     ],
     "notes": "Serves 4. Classic homemade bagel pizzas with crispy edges and melty cheese. Tips: pre-toasting the bagels is the #1 trick for avoiding sogginess. Cup n' Crisp pepperoni curls up and crisps, and the little grease cups are great. Rao's sauce is thicker than most jarred sauces, so it won't run. Whole wheat bagels are denser and hold up well. The frozen onions don't need to cook through; just pat them dry and they soften in the oven."
+  },
+  {
+    "id": "harvest-hash-chex-mix",
+    "title": "Harvest Hash Chex Mix",
+    "source": "https://onelittleproject.com/harvest-hash-chex-mix/",
+    "categories": [
+      "Desserts"
+    ],
+    "ingredients": [
+      "3/4 cup butter, melted",
+      "3/4 cup brown sugar, packed",
+      "2 tablespoons vanilla extract",
+      "1 box Rice Chex (12 oz)",
+      "1 bag Bugles (7 oz)",
+      "4 cups pretzel twists",
+      "1 heaping cup candy corn",
+      "1 heaping cup candy corn pumpkins",
+      "1 bag Reese's Pieces (8 oz)"
+    ],
+    "steps": [
+      "Preheat the oven to 275°F.",
+      "Melt the butter in the microwave in a medium bowl or measuring cup. Add the brown sugar and vanilla and whisk until combined and dissolved.",
+      "In a very large bowl, combine the Chex, pretzels and Bugles. Pour the sauce over and toss gently until evenly coated.",
+      "Line two large baking sheets with parchment. Divide the mixture between them and spread in even layers.",
+      "Bake 45 minutes, stirring every 15 minutes.",
+      "Let cool completely, then move to a large bowl and toss with the candy corn, candy corn pumpkins and Reese's Pieces.",
+      "Store in an airtight container."
+    ],
+    "notes": "Makes a big batch (the source gives no serving count). Sweet and buttery rather than savory. Candy corn is optional if you find it too sweet; the mix still works with just the cereal, pretzels, Bugles and Reese's Pieces. Add the candy only after the mix has cooled so it doesn't melt. Good for party favors in small treat bags. The source also links a caramel corn version (Scarecrow Crunch)."
   }
 ]
