@@ -2561,5 +2561,32 @@
       "Serve warm over pasta or mashed potatoes."
     ],
     "notes": "Serves 6. About 15 min prep, 6 hours cook. Good over mashed potatoes, noodles, or rice. Leaving out the mushrooms works; add an extra tablespoon of Worcestershire to make up the flavor."
+  },
+  {
+    "id": "mashed-potatoes",
+    "title": "Mashed Potatoes",
+    "source": "Erin",
+    "categories": [
+      "Sides"
+    ],
+    "ingredients": [
+      "5-9 russet potatoes",
+      "Salt, for the boiling water",
+      "Salt",
+      "Pepper",
+      "Garlic powder",
+      "3-4 tablespoons salted butter",
+      "1/4 cup milk, maybe more"
+    ],
+    "steps": [
+      "Bring a pot of salted water to a boil.",
+      "Peel the potatoes and chop them into slices.",
+      "Add the potatoes to the pot and boil 10-15 minutes.",
+      "Poke with a fork. When they are fluffy and falling apart, they are done.",
+      "Drain and return the potatoes to the pan.",
+      "Add salt, pepper, garlic powder, butter, and milk.",
+      "Smash until mashed."
+    ],
+    "notes": "Erin's recipe. Amounts are approximate: add more milk if needed to get the texture you want."
   }
 ]
