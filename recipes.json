@@ -2588,5 +2588,51 @@
       "Smash until mashed."
     ],
     "notes": "Erin's recipe. Amounts are approximate: add more milk if needed to get the texture you want."
+  },
+  {
+    "id": "caramel-pumpkin-pecan-upside-down-cake",
+    "title": "Caramel Pumpkin Pecan Upside Down Cake",
+    "source": "https://bluesbestlife.com/pumpkin-upside-down-cake/",
+    "categories": [
+      "Desserts"
+    ],
+    "ingredients": [
+      "CARAMEL PECAN TOPPING",
+      "1/2 cup unsalted butter",
+      "1/2 cup light brown sugar, packed",
+      "1/4 cup light corn syrup",
+      "1 teaspoon vanilla extract",
+      "Pinch flaky sea salt",
+      "1 1/2 cups pecan halves, or enough to cover bottom of pan",
+      "PUMPKIN CAKE",
+      "1/2 cup granulated sugar",
+      "1/3 cup light brown sugar, lightly packed",
+      "6 tablespoons vegetable oil",
+      "1 cup pumpkin puree (not pie filling)",
+      "2 large eggs + 1 egg yolk",
+      "1 teaspoon vanilla extract",
+      "1 cup all purpose flour",
+      "1 teaspoon baking powder",
+      "1/2 teaspoon baking soda",
+      "1/4 teaspoon salt",
+      "1 teaspoon pumpkin pie spice",
+      "1/2 teaspoon cinnamon"
+    ],
+    "steps": [
+      "Preheat oven to 350°F. Grease a 9 inch cake pan well, line the bottom with parchment, and grease the parchment and sides.",
+      "Spread the pecan halves in an even layer on the bottom of the pan.",
+      "In a small saucepan over medium heat, melt the butter with the brown sugar and corn syrup, stirring to dissolve the sugar. Once it boils, time it for exactly 1 minute.",
+      "Remove from heat and stir in the vanilla and flaky sea salt. Pour the caramel evenly over the pecans.",
+      "In a large bowl, mix the granulated sugar, brown sugar, and oil with a mixer. Add the pumpkin puree and mix until smooth.",
+      "Add the eggs and egg yolk one at a time, mixing well after each. Stir in the vanilla.",
+      "In a separate bowl, whisk together the flour, baking powder, baking soda, salt, pumpkin pie spice, and cinnamon.",
+      "Add the flour mixture to the pumpkin mixture and mix just until no white streaks remain.",
+      "Pour the batter over the caramel and pecans and spread gently without disturbing the caramel.",
+      "Bake 30-32 minutes, until a toothpick comes out with a few crumbs and no wet batter.",
+      "Cool in the pan for about 10 minutes. Run a knife around the edge.",
+      "Set a serving plate upside down over the pan and, using a towel or oven mitts, flip in one motion. Lift the pan away slowly, and put any stuck pecans or caramel back on top.",
+      "Serve warm or at room temperature, with vanilla ice cream or whipped cream if you like."
+    ],
+    "notes": "Serves 8. Prep 20 min, cook 30 min. Store covered at room temperature up to 2 days, or in the fridge up to 5 days. Best baked and flipped the same day. Corn syrup can be swapped for maple or golden syrup, but the topping will be less sticky."
   }
 ]
