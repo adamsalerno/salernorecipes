@@ -95,7 +95,7 @@ const PHONE = "";
 // Order the category chips appear in. Any other category shows up after these.
 const ORDER = ["Beef","Chicken","Pork","Seafood","Pasta","Sides","Soups","Desserts","Breakfast","Drinks","Crockpot","Air Fryer"];
 // Categories left off the recipe wheel until you turn them on (the choice is remembered on each phone).
-const WHEEL_DEFAULT_OUT = ["Desserts"];
+const WHEEL_DEFAULT_OUT = ["Desserts","Drinks"];
 // How many recipes are drawn on the wheel at once.
 const WHEEL_SLICES = 10;
 
@@ -104,9 +104,9 @@ const WHEEL_SLICES = 10;
 if (window.top !== window.self) document.documentElement.style.display = "none";
 const app = document.getElementById("app");
 let recipes = [], sel = new Set(), query = "", editing = false, loaded = false, failed = false;
-let spinning = false, spinTimer = 0, wheelState = null, backTo = "";
+let spinning = false, spinTimer = 0, wheelState = null, backTo = "", dessertsOnly = false;
 let wheelOut = new Set(WHEEL_DEFAULT_OUT);
-try { const w = JSON.parse(localStorage.getItem("wheelOut")); if (Array.isArray(w)) wheelOut = new Set(w.filter(x => typeof x === "string")); } catch (e) {}
+try { const w = JSON.parse(localStorage.getItem("wheelOut2")); if (Array.isArray(w)) wheelOut = new Set(w.filter(x => typeof x === "string")); } catch (e) {}
 let favs = new Set();
 try { favs = new Set(JSON.parse(localStorage.getItem("favs") || "[]")); } catch (e) {}
 let hidden = new Set();
@@ -128,7 +128,7 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">"
 const saveFavs = () => { try { localStorage.setItem("favs", JSON.stringify([...favs])); } catch (e) {} };
 const saveHidden = () => { try { localStorage.setItem("hidden", JSON.stringify([...hidden])); } catch (e) {} };
 const currentId = () => { if (!location.hash.startsWith("#r/")) return null; try { return decodeURIComponent(location.hash.slice(3)); } catch (e) { return null; } };
-const saveWheelOut = () => { try { localStorage.setItem("wheelOut", JSON.stringify([...wheelOut])); } catch (e) {} };
+const saveWheelOut = () => { try { localStorage.setItem("wheelOut2", JSON.stringify([...wheelOut])); } catch (e) {} };
 
 // Only http(s) links are ever allowed (blocks javascript:, data:, etc.).
 function safeUrl(s) {
@@ -268,7 +268,9 @@ function render() {
 
 
 // ---------- Recipe wheel ----------
-const wheelPool = () => recipes.filter(r => !hidden.has(r.id) && !(r.categories || []).some(c => wheelOut.has(c)));
+const wheelPool = () => recipes.filter(r => !hidden.has(r.id) && (dessertsOnly
+  ? (r.categories || []).includes("Desserts")
+  : !(r.categories || []).some(c => wheelOut.has(c))));
 const recipeMap = () => new Map(recipes.map(r => [r.id, r]));
 function newSegs(pool, avoid) {
   const others = pool.filter(r => r.id !== avoid);
@@ -319,14 +321,15 @@ function renderWheel() {
   app.innerHTML = `
     <div class="top"><button class="back" data-a="back">‹ All recipes</button></div>
     <h1 class="rtitle">Spin the wheel</h1>
+    <div class="wchips"><button class="chip" data-wmode="meals" aria-pressed="${!dessertsOnly}">Meals</button><button class="chip" data-wmode="desserts" aria-pressed="${dessertsOnly}">Desserts only</button></div>
     ${pool.length
       ? `<div class="wheelbox"><div class="ptr"></div><canvas id="wheel" width="720" height="720" role="img" aria-label="Recipe wheel"></canvas></div>`
-      : `<p class="empty">Nothing is left on the wheel. Tap a category below to put it back.</p>`}
+      : `<p class="empty">${dessertsOnly ? "No dessert recipes yet." : "Nothing is left on the wheel. Tap a category below to put it back."}</p>`}
     <div id="wres" aria-live="polite">${winner ? resultHTML(winner) : ""}</div>
     <button class="btn primary spin" id="spinbtn" data-a="spin"${pool.length ? "" : " disabled"}>${winner ? "Spin again" : "Spin the wheel"}</button>
-    <h2>On the wheel</h2>
-    <p class="hint">Tap a category to leave it out or put it back. Hidden recipes are never included.</p>
-    <div class="wchips" style="margin-top:12px">${chips}</div>
+    ${dessertsOnly
+      ? `<p class="hint" style="margin-top:16px">Showing only recipes in Desserts. Switch to Meals to pick categories.</p>`
+      : `<h2>On the wheel</h2><p class="hint">Tap a category to leave it out or put it back. Hidden recipes are never included.</p><div class="wchips" style="margin-top:12px">${chips}</div>`}
     <p class="count" style="margin-top:12px">${pool.length} ${pool.length === 1 ? "recipe" : "recipes"} in the mix</p>`;
   if (pool.length) {
     const cv = document.getElementById("wheel");
@@ -394,6 +397,10 @@ app.addEventListener("click", e => {
   const t = e.target.closest("button");
   if (!t) return;
   if (t.dataset.open) { location.hash = "#r/" + encodeURIComponent(t.dataset.open); return; }
+  if (t.dataset.wmode) {
+    if (spinning) return;
+    dessertsOnly = t.dataset.wmode === "desserts"; wheelState = null; renderWheel(); return;
+  }
   if (t.dataset.wcat) {
     if (spinning) return;
     const c = t.dataset.wcat; wheelOut.has(c) ? wheelOut.delete(c) : wheelOut.add(c);
