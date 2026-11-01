@@ -276,6 +276,18 @@ function newSegs(pool, avoid) {
   const others = pool.filter(r => r.id !== avoid);
   return shuffled(others.length ? others : pool).slice(0, WHEEL_SLICES).map(r => r.id);
 }
+// A different set of slices: prefer recipes that weren't on the wheel last time.
+function freshSegs(pool, prev) {
+  const old = new Set(prev), fresh = shuffled(pool.filter(r => !old.has(r.id))), rest = shuffled(pool.filter(r => old.has(r.id)));
+  return fresh.concat(rest).slice(0, WHEEL_SLICES).map(r => r.id);
+}
+function reshuffle() {
+  if (spinning) return;
+  const pool = wheelPool();
+  if (!pool.length || !wheelState) return;
+  wheelState = { segs: freshSegs(pool, wheelState.segs), rot: 0, winner: null };
+  renderWheel();
+}
 function fitText(ctx, s, max) {
   if (ctx.measureText(s).width <= max) return s;
   while (s.length > 1 && ctx.measureText(s + "…").width > max) s = s.slice(0, -1);
@@ -327,6 +339,7 @@ function renderWheel() {
       : `<p class="empty">${dessertsOnly ? "No dessert recipes yet." : "Nothing is left on the wheel. Tap a category below to put it back."}</p>`}
     <div id="wres" aria-live="polite">${winner ? resultHTML(winner) : ""}</div>
     <button class="btn primary spin" id="spinbtn" data-a="spin"${pool.length ? "" : " disabled"}>${winner ? "Spin again" : "Spin the wheel"}</button>
+    <button class="btn wheelbtn" id="shufbtn" data-a="reshuffle"${pool.length ? "" : " disabled"}>↻ Shuffle the ${WHEEL_SLICES} picks</button>
     ${dessertsOnly
       ? `<p class="hint" style="margin-top:16px">Showing only recipes in Desserts. Switch to Meals to pick categories.</p>`
       : `<h2>On the wheel</h2><p class="hint">Tap a category to leave it out or put it back. Hidden recipes are never included.</p><div class="wchips" style="margin-top:12px">${chips}</div>`}
@@ -357,6 +370,7 @@ function spin() {
   wheelState.rot = target; wheelState.winner = winnerId;
   document.getElementById("wres").innerHTML = "";
   const btn = document.getElementById("spinbtn"); btn.disabled = true;
+  document.getElementById("shufbtn").disabled = true;
   spinning = true;
   spinTimer = setTimeout(() => {
     spinning = false;
@@ -364,6 +378,7 @@ function spin() {
     if (!res || !b) return;
     res.innerHTML = resultHTML(byId.get(winnerId));
     b.disabled = false; b.textContent = "Spin again";
+    const sb = document.getElementById("shufbtn"); if (sb) sb.disabled = false;
     res.scrollIntoView({ block: "nearest" });
   }, dur + 80);
 }
@@ -415,6 +430,7 @@ app.addEventListener("click", e => {
   else if (a === "back") { const b = backTo; backTo = ""; location.hash = b; }
   else if (a === "wheel") location.hash = "#wheel";
   else if (a === "spin") spin();
+  else if (a === "reshuffle") reshuffle();
   else if (a === "viewpick") { if (wheelState && wheelState.winner && !spinning) { backTo = "#wheel"; location.hash = "#r/" + encodeURIComponent(wheelState.winner); } }
   else if (a === "unhideall") { hidden.clear(); saveHidden(); renderList(); }
   else if (a === "sendhidden") {
