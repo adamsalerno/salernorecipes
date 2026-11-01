@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Salerno Recipes">
 <title>Salerno Recipes</title>
@@ -71,6 +73,18 @@ textarea{width:100%;font:inherit;padding:12px;border-radius:12px;border:1px soli
 .row.off{opacity:.5}
 .tog{flex:none;margin-right:12px;font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--accent);cursor:pointer}
 .heart.x{font-size:18px}
+.btn:disabled{opacity:.5;cursor:default}
+.wheelbtn{display:block;width:100%;margin-top:10px;text-align:center}
+.wheelbox{position:relative;width:min(100%,340px);margin:20px auto 6px}
+.wheelbox canvas{display:block;width:100%;height:auto;border-radius:50%;box-shadow:0 2px 12px rgba(0,0,0,.2);will-change:transform}
+.ptr{position:absolute;left:50%;top:-10px;transform:translateX(-50%);width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:26px solid var(--ink);z-index:2;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+.result{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:16px;text-align:center}
+.result small{color:var(--mute);font-size:14px}
+.result .title{display:block;font-size:24px;line-height:1.2;margin:4px 0 2px}
+.result .actions{justify-content:center}
+.spin{display:block;width:100%;margin-top:14px;font-size:18px;padding:14px}
+.wchips{display:flex;flex-wrap:wrap;gap:8px}
+.chip.out{background:none;border:1px solid var(--line);color:var(--mute);text-decoration:line-through}
 </style>
 </head>
 <body>
@@ -80,10 +94,19 @@ textarea{width:100%;font:inherit;padding:12px;border-radius:12px;border:1px soli
 const PHONE = "";
 // Order the category chips appear in. Any other category shows up after these.
 const ORDER = ["Beef","Chicken","Pork","Seafood","Pasta","Sides","Soups","Desserts","Breakfast","Drinks","Crockpot","Air Fryer"];
+// Categories left off the recipe wheel until you turn them on (the choice is remembered on each phone).
+const WHEEL_DEFAULT_OUT = ["Desserts"];
+// How many recipes are drawn on the wheel at once.
+const WHEEL_SLICES = 10;
 
 
+// Never render inside someone else's frame (clickjacking).
+if (window.top !== window.self) document.documentElement.style.display = "none";
 const app = document.getElementById("app");
 let recipes = [], sel = new Set(), query = "", editing = false, loaded = false, failed = false;
+let spinning = false, spinTimer = 0, wheelState = null, backTo = "";
+let wheelOut = new Set(WHEEL_DEFAULT_OUT);
+try { const w = JSON.parse(localStorage.getItem("wheelOut")); if (Array.isArray(w)) wheelOut = new Set(w.filter(x => typeof x === "string")); } catch (e) {}
 let favs = new Set();
 try { favs = new Set(JSON.parse(localStorage.getItem("favs") || "[]")); } catch (e) {}
 let hidden = new Set();
@@ -101,10 +124,39 @@ const saveDraft = () => {
 };
 const clearDraft = () => { draft = null; try { localStorage.removeItem("draft"); } catch (e) {} };
 const SHARE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
-const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const saveFavs = () => { try { localStorage.setItem("favs", JSON.stringify([...favs])); } catch (e) {} };
 const saveHidden = () => { try { localStorage.setItem("hidden", JSON.stringify([...hidden])); } catch (e) {} };
-const currentId = () => location.hash.startsWith("#r/") ? decodeURIComponent(location.hash.slice(3)) : null;
+const currentId = () => { if (!location.hash.startsWith("#r/")) return null; try { return decodeURIComponent(location.hash.slice(3)); } catch (e) { return null; } };
+const saveWheelOut = () => { try { localStorage.setItem("wheelOut", JSON.stringify([...wheelOut])); } catch (e) {} };
+
+// Only http(s) links are ever allowed (blocks javascript:, data:, etc.).
+function safeUrl(s) {
+  s = String(s || "").trim();
+  if (!s) return null;
+  if (!/^https?:\/\//i.test(s)) { if (/^[a-z][a-z0-9+.-]*:(?!\d)/i.test(s)) return null; s = "https://" + s; }
+  try { const u = new URL(s); return /^https?:$/.test(u.protocol) ? u.href : null; } catch (e) { return null; }
+}
+
+// Treat recipes.json (and the cached copy) as untrusted: keep only the fields the site uses, with the right types.
+const str = v => typeof v === "string" ? v : "";
+const strs = v => Array.isArray(v) ? v.filter(x => typeof x === "string") : [];
+function clean(data) {
+  if (!Array.isArray(data)) throw new Error("bad recipe data");
+  return data.filter(r => r && typeof r === "object" && typeof r.id === "string" && r.id && typeof r.title === "string")
+    .map(r => ({ id: r.id, title: r.title, categories: strs(r.categories), ingredients: strs(r.ingredients), steps: strs(r.steps), notes: str(r.notes), source: str(r.source) }));
+}
+
+// Unbiased random integer in [0, n).
+function rnd(n) {
+  if (window.crypto && crypto.getRandomValues) {
+    const a = new Uint32Array(1), lim = Math.floor(4294967296 / n) * n;
+    do { crypto.getRandomValues(a); } while (a[0] >= lim);
+    return a[0] % n;
+  }
+  return Math.floor(Math.random() * n);
+}
+function shuffled(list) { const a = list.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
 
 function categoriesInUse(list) {
@@ -116,6 +168,7 @@ function categoriesInUse(list) {
 
 
 function renderList() {
+  backTo = "";
   document.title = "Salerno Recipes";
   const hiddenList = recipes.filter(r => hidden.has(r.id));
   const showHidden = sel.has("Hidden");
@@ -143,7 +196,7 @@ function renderList() {
   }).join("") + "</div>";
   // Keep the search box (and keyboard) alive while typing: only rebuild it when missing.
   if (!document.getElementById("q")) {
-    app.innerHTML = '<div class="top"><h1 class="site">Salerno Recipes</h1><div class="tools"><button class="refresh" data-a="share" aria-label="Share this site">'+SHARE_ICON+'</button><button class="refresh" data-a="refresh" aria-label="Refresh">↻</button></div></div><div class="search"><input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search" autocomplete="off"><button type="button" class="clear" id="clr" data-a="clearq" aria-label="Clear search" hidden>✕</button></div><div class="selrow" id="selrow"></div><div class="chips" id="chips"></div><div id="bar"></div><div id="results"></div>';
+    app.innerHTML = '<div class="top"><h1 class="site">Salerno Recipes</h1><div class="tools"><button class="refresh" data-a="share" aria-label="Share this site">'+SHARE_ICON+'</button><button class="refresh" data-a="refresh" aria-label="Refresh">↻</button></div></div><div class="search"><input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search" autocomplete="off"><button type="button" class="clear" id="clr" data-a="clearq" aria-label="Clear search" hidden>✕</button></div><button type="button" class="btn wheelbtn" data-a="wheel">🎡 Spin the wheel to pick a recipe</button><div class="selrow" id="selrow"></div><div class="chips" id="chips"></div><div id="bar"></div><div id="results"></div>';
     document.getElementById("q").addEventListener("input", e => { query = e.target.value; renderList(); });
   }
   document.getElementById("q").value = query;
@@ -166,7 +219,7 @@ function renderList() {
 function renderRecipe(r) {
   document.title = r.title + " | Salerno Recipes";
   const f = favs.has(r.id);
-  const url = /^https?:/.test(r.source || "") ? r.source : "https://" + (r.source || "");
+  const url = safeUrl(r.source);
   if (editing) {
     const d = draft && draft.id === r.id ? draft : null;
     app.innerHTML = `
@@ -199,14 +252,117 @@ function renderRecipe(r) {
     <h2>Steps</h2>
     <ol class="steps">${(r.steps || []).map(s => `<li>${esc(s)}</li>`).join("")}</ol>
     ${r.notes ? `<div class="note">${esc(r.notes)}</div>` : ""}
-    ${r.source ? `<p class="src"><a href="${esc(url)}" target="_blank" rel="noopener">View the original</a></p>` : ""}`;
+    ${url ? `<p class="src"><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">View the original</a></p>` : ""}`;
 }
 
 
 function render() {
+  const onWheel = location.hash === "#wheel";
+  if (onWheel && spinning) return; // let the spin finish; background refreshes shouldn't interrupt it
+  clearTimeout(spinTimer); spinning = false;
+  if (onWheel) { editing = false; renderWheel(); return; }
   const id = currentId();
   const r = id && recipes.find(x => x.id === id);
   if (r) { renderRecipe(r); saveUI(); } else { if (loaded) editing = false; if (id && loaded) location.hash = ""; renderList(); }
+}
+
+
+// ---------- Recipe wheel ----------
+const wheelPool = () => recipes.filter(r => !hidden.has(r.id) && !(r.categories || []).some(c => wheelOut.has(c)));
+const recipeMap = () => new Map(recipes.map(r => [r.id, r]));
+function newSegs(pool, avoid) {
+  const others = pool.filter(r => r.id !== avoid);
+  return shuffled(others.length ? others : pool).slice(0, WHEEL_SLICES).map(r => r.id);
+}
+function fitText(ctx, s, max) {
+  if (ctx.measureText(s).width <= max) return s;
+  while (s.length > 1 && ctx.measureText(s + "…").width > max) s = s.slice(0, -1);
+  return s.trimEnd() + "…";
+}
+function drawWheel(cv, titles) {
+  const ctx = cv.getContext("2d"), S = cv.width, c = S / 2, R = c - 8, n = titles.length, a = Math.PI * 2 / n;
+  const cs = getComputedStyle(document.documentElement), v = k => cs.getPropertyValue(k).trim();
+  const pal = [[v("--accent"), v("--onaccent")], [v("--chip"), v("--ink")], [v("--line"), v("--ink")]];
+  ctx.clearRect(0, 0, S, S);
+  for (let i = 0; i < n; i++) {
+    const p = pal[n > 1 && n % 2 && i === n - 1 ? 2 : i % 2];
+    const st = -Math.PI / 2 + i * a;
+    ctx.beginPath(); ctx.moveTo(c, c); ctx.arc(c, c, R, st, st + a); ctx.closePath();
+    ctx.fillStyle = p[0]; ctx.fill();
+    if (n > 1) { ctx.strokeStyle = v("--card"); ctx.lineWidth = 3; ctx.stroke(); }
+    ctx.save(); ctx.translate(c, c); ctx.rotate(st + a / 2);
+    ctx.fillStyle = p[1]; ctx.font = '600 30px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif';
+    ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    ctx.fillText(fitText(ctx, titles[i], R * .66), R - 24, 0);
+    ctx.restore();
+  }
+  ctx.beginPath(); ctx.arc(c, c, R, 0, Math.PI * 2); ctx.lineWidth = 6; ctx.strokeStyle = v("--line"); ctx.stroke();
+  ctx.beginPath(); ctx.arc(c, c, 30, 0, Math.PI * 2); ctx.fillStyle = v("--card"); ctx.fill(); ctx.lineWidth = 4; ctx.stroke();
+}
+const resultHTML = r => `<div class="result"><small>Your pick</small><span class="title">${esc(r.title)}</span><small>${esc((r.categories || []).join(", "))}</small><div class="actions"><button class="btn primary" data-a="viewpick">View recipe</button></div></div>`;
+
+function renderWheel() {
+  backTo = "";
+  document.title = "Recipe wheel | Salerno Recipes";
+  if (!loaded) {
+    app.innerHTML = `<button class="back" data-a="back">‹ All recipes</button><p class="empty">${failed ? "The recipes could not be loaded. Check your connection and reload." : "Loading recipes…"}</p>`;
+    return;
+  }
+  const pool = wheelPool(), ids = new Set(pool.map(r => r.id)), byId = recipeMap();
+  if (wheelState && (!wheelState.segs.length || !wheelState.segs.every(id => ids.has(id)) || (wheelState.winner && !ids.has(wheelState.winner)))) wheelState = null;
+  if (!wheelState && pool.length) wheelState = { segs: newSegs(pool, null), rot: 0, winner: null };
+  const chips = categoriesInUse(recipes.filter(r => !hidden.has(r.id))).map(c => {
+    const on = !wheelOut.has(c);
+    return `<button class="chip${on ? "" : " out"}" data-wcat="${esc(c)}" aria-pressed="${on}" aria-label="${esc(c)}: ${on ? "on the wheel" : "left out"}">${esc(c)}</button>`;
+  }).join("");
+  const winner = wheelState && wheelState.winner ? byId.get(wheelState.winner) : null;
+  app.innerHTML = `
+    <div class="top"><button class="back" data-a="back">‹ All recipes</button></div>
+    <h1 class="rtitle">Spin the wheel</h1>
+    ${pool.length
+      ? `<div class="wheelbox"><div class="ptr"></div><canvas id="wheel" width="720" height="720" role="img" aria-label="Recipe wheel"></canvas></div>`
+      : `<p class="empty">Nothing is left on the wheel. Tap a category below to put it back.</p>`}
+    <div id="wres" aria-live="polite">${winner ? resultHTML(winner) : ""}</div>
+    <button class="btn primary spin" id="spinbtn" data-a="spin"${pool.length ? "" : " disabled"}>${winner ? "Spin again" : "Spin the wheel"}</button>
+    <h2>On the wheel</h2>
+    <p class="hint">Tap a category to leave it out or put it back. Hidden recipes are never included.</p>
+    <div class="wchips" style="margin-top:12px">${chips}</div>
+    <p class="count" style="margin-top:12px">${pool.length} ${pool.length === 1 ? "recipe" : "recipes"} in the mix</p>`;
+  if (pool.length) {
+    const cv = document.getElementById("wheel");
+    drawWheel(cv, wheelState.segs.map(id => byId.get(id).title));
+    cv.style.transform = `rotate(${wheelState.rot}deg)`;
+  }
+  saveUI();
+}
+
+function spin() {
+  if (spinning) return;
+  const pool = wheelPool(), cv = document.getElementById("wheel");
+  if (!pool.length || !cv || !wheelState) return;
+  const byId = recipeMap();
+  if (wheelState.winner) { // spinning again: draw a fresh set of recipes
+    wheelState = { segs: newSegs(pool, wheelState.winner), rot: 0, winner: null };
+    drawWheel(cv, wheelState.segs.map(id => byId.get(id).title));
+  }
+  const n = wheelState.segs.length, size = 360 / n, i = rnd(n), winnerId = wheelState.segs[i];
+  const landAt = (i + .5) * size + (Math.random() - .5) * size * .7; // somewhere inside the winning slice
+  const target = 360 * 5 + (((360 - landAt) % 360) + 360) % 360;
+  const dur = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches ? 600 : 4500;
+  cv.style.transition = "none"; cv.style.transform = "rotate(0deg)"; void cv.offsetWidth;
+  cv.style.transition = "transform " + dur + "ms cubic-bezier(.12,.7,.1,1)"; cv.style.transform = `rotate(${target}deg)`;
+  wheelState.rot = target; wheelState.winner = winnerId;
+  document.getElementById("wres").innerHTML = "";
+  const btn = document.getElementById("spinbtn"); btn.disabled = true;
+  spinning = true;
+  spinTimer = setTimeout(() => {
+    spinning = false;
+    const res = document.getElementById("wres"), b = document.getElementById("spinbtn");
+    if (!res || !b) return;
+    res.innerHTML = resultHTML(byId.get(winnerId));
+    b.disabled = false; b.textContent = "Spin again";
+    res.scrollIntoView({ block: "nearest" });
+  }, dur + 80);
 }
 
 
@@ -238,13 +394,21 @@ app.addEventListener("click", e => {
   const t = e.target.closest("button");
   if (!t) return;
   if (t.dataset.open) { location.hash = "#r/" + encodeURIComponent(t.dataset.open); return; }
+  if (t.dataset.wcat) {
+    if (spinning) return;
+    const c = t.dataset.wcat; wheelOut.has(c) ? wheelOut.delete(c) : wheelOut.add(c);
+    saveWheelOut(); wheelState = null; renderWheel(); return;
+  }
   if (t.dataset.cat) { const c = t.dataset.cat; if (c === "All") sel.clear(); else if (sel.has(c)) sel.delete(c); else sel.add(c); renderList(); return; }
   if (t.dataset.hide) { const id = t.dataset.hide; hidden.has(id) ? hidden.delete(id) : hidden.add(id); saveHidden(); renderList(); return; }
   if (t.dataset.fav) { const id = t.dataset.fav; favs.has(id) ? favs.delete(id) : favs.add(id); saveFavs(); renderList(); return; }
   const a = t.dataset.a, r = recipes.find(x => x.id === currentId());
   if (a === "clearq") { query = ""; renderList(); document.getElementById("q").focus(); }
   else if (a === "share") share(r || null);
-  else if (a === "back") location.hash = "";
+  else if (a === "back") { const b = backTo; backTo = ""; location.hash = b; }
+  else if (a === "wheel") location.hash = "#wheel";
+  else if (a === "spin") spin();
+  else if (a === "viewpick") { if (wheelState && wheelState.winner && !spinning) { backTo = "#wheel"; location.hash = "#r/" + encodeURIComponent(wheelState.winner); } }
   else if (a === "unhideall") { hidden.clear(); saveHidden(); renderList(); }
   else if (a === "sendhidden") {
     const list = recipes.filter(x => hidden.has(x.id));
@@ -278,7 +442,7 @@ try {
   if (u) {
     query = u.q || "";
     (u.sel || []).forEach(c => sel.add(c));
-    if (!location.hash && u.hash) history.replaceState(null, "", u.hash);
+    if (!location.hash && typeof u.hash === "string" && /^#(wheel|r\/[^\s]*)$/.test(u.hash)) history.replaceState(null, "", u.hash);
     editing = !!u.editing && u.hash === location.hash;
   }
 } catch (e) {}
@@ -286,14 +450,14 @@ try {
 
 // Show the last-known recipes instantly, then check for fresh ones in the background.
 let cached = null;
-try { cached = localStorage.getItem("recipesCache"); if (cached) { recipes = JSON.parse(cached); loaded = true; } } catch (e) { cached = null; }
+try { cached = localStorage.getItem("recipesCache"); if (cached) { recipes = clean(JSON.parse(cached)); loaded = true; } } catch (e) { cached = null; }
 
 
 fetch("recipes.json", { cache: "no-cache" })
   .then(res => { if (!res.ok) throw new Error(res.status); return res.json(); })
   .then(data => {
     const wasLoaded = loaded, fresh = JSON.stringify(data);
-    recipes = data; loaded = true; failed = false;
+    recipes = clean(data); loaded = true; failed = false;
     try { localStorage.setItem("recipesCache", fresh); } catch (e) {}
     if (!wasLoaded || (fresh !== cached && !editing)) render();
   })
