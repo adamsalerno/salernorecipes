@@ -115,7 +115,8 @@ try { hidden = new Set(JSON.parse(localStorage.getItem("hidden") || "[]")); } ca
 
 let draft = null;
 try { draft = JSON.parse(localStorage.getItem("draft") || "null"); } catch (e) {}
-const saveUI = () => { try { localStorage.setItem("ui", JSON.stringify({ q: query, sel: [...sel], editing, hash: location.hash })); } catch (e) {} };
+const saveUI = () => { try { localStorage.setItem("ui", JSON.stringify({ q: query, sel: [...sel], editing, hash: location.hash, t: Date.now() })); } catch (e) {} };
+const STALE_MS = 24 * 60 * 60 * 1000; // after this long away, start fresh on the home list
 const saveDraft = () => {
   const g = id => document.getElementById(id);
   if (!editing || !g("e-ing")) return;
@@ -456,13 +457,22 @@ app.addEventListener("click", e => {
 app.addEventListener("input", e => { if (e.target.id && e.target.id.startsWith("e-")) saveDraft(); });
 
 
+let hiddenAt = 0;
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) { hiddenAt = Date.now(); saveUI(); return; }
+  if (hiddenAt && Date.now() - hiddenAt > STALE_MS && !editing) {
+    query = ""; sel.clear(); hiddenAt = 0;
+    if (location.hash) location.hash = ""; else render();
+    window.scrollTo(0, 0);
+  }
+});
 window.addEventListener("hashchange", () => { editing = false; render(); window.scrollTo(0, 0); });
 
 
 // Restore where you were if the phone discarded the page while it was in the background.
 try {
   const u = JSON.parse(localStorage.getItem("ui") || "null");
-  if (u) {
+  if (u && !(u.t && Date.now() - u.t > STALE_MS)) {
     query = u.q || "";
     (u.sel || []).forEach(c => sel.add(c));
     if (!location.hash && typeof u.hash === "string" && /^#(wheel|r\/[^\s]*)$/.test(u.hash)) history.replaceState(null, "", u.hash);
