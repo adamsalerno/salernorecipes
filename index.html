@@ -197,7 +197,7 @@ function renderList() {
   }).join("") + "</div>";
   // Keep the search box (and keyboard) alive while typing: only rebuild it when missing.
   if (!document.getElementById("q")) {
-    app.innerHTML = '<div class="top"><h1 class="site">Salerno Recipes</h1><div class="tools"><button class="refresh" data-a="share" aria-label="Share this site">'+SHARE_ICON+'</button><button class="refresh" data-a="refresh" aria-label="Refresh">↻</button></div></div><div class="search"><input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search" autocomplete="off"><button type="button" class="clear" id="clr" data-a="clearq" aria-label="Clear search" hidden>✕</button></div><button type="button" class="btn wheelbtn" data-a="wheel">🎡 Spin the wheel to pick a recipe</button><div class="selrow" id="selrow"></div><div class="chips" id="chips"></div><div id="bar"></div><div id="results"></div>';
+    app.innerHTML = '<div class="top"><h1 class="site">Salerno Recipes</h1><div class="tools"><button class="refresh" data-a="share" aria-label="Share this site">'+SHARE_ICON+'</button><button class="refresh" data-a="refresh" aria-label="Refresh">↻</button></div></div><div class="search"><input id="q" type="search" placeholder="Search recipes or ingredients" aria-label="Search" autocomplete="off"><button type="button" class="clear" id="clr" data-a="clearq" aria-label="Clear search" hidden>✕</button></div><button type="button" class="btn wheelbtn" data-a="wheel">🎡 Spin the wheel to pick a recipe</button><button type="button" class="btn wheelbtn" data-a="food">🥡 Spin the wheel for takeout</button><div class="selrow" id="selrow"></div><div class="chips" id="chips"></div><div id="bar"></div><div id="results"></div>';
     document.getElementById("q").addEventListener("input", e => { query = e.target.value; renderList(); });
   }
   document.getElementById("q").value = query;
@@ -258,10 +258,11 @@ function renderRecipe(r) {
 
 
 function render() {
-  const onWheel = location.hash === "#wheel";
-  if (onWheel && spinning) return; // let the spin finish; background refreshes shouldn't interrupt it
+  const onWheel = location.hash === "#wheel", onFood = location.hash === "#food";
+  if ((onWheel || onFood) && spinning) return; // let the spin finish; background refreshes shouldn't interrupt it
   clearTimeout(spinTimer); spinning = false;
   if (onWheel) { editing = false; renderWheel(); return; }
+  if (onFood) { editing = false; renderFood(); return; }
   const id = currentId();
   const r = id && recipes.find(x => x.id === id);
   if (r) { renderRecipe(r); saveUI(); } else { if (loaded) editing = false; if (id && loaded) location.hash = ""; renderList(); }
@@ -294,7 +295,7 @@ function fitText(ctx, s, max) {
   while (s.length > 1 && ctx.measureText(s + "…").width > max) s = s.slice(0, -1);
   return s.trimEnd() + "…";
 }
-function drawWheel(cv, titles) {
+function drawWheel(cv, titles, fs = 30, mw = .66) {
   const ctx = cv.getContext("2d"), S = cv.width, c = S / 2, R = c - 8, n = titles.length, a = Math.PI * 2 / n;
   const cs = getComputedStyle(document.documentElement), v = k => cs.getPropertyValue(k).trim();
   const pal = [[v("--accent"), v("--onaccent")], [v("--chip"), v("--ink")], [v("--line"), v("--ink")]];
@@ -306,9 +307,9 @@ function drawWheel(cv, titles) {
     ctx.fillStyle = p[0]; ctx.fill();
     if (n > 1) { ctx.strokeStyle = v("--card"); ctx.lineWidth = 3; ctx.stroke(); }
     ctx.save(); ctx.translate(c, c); ctx.rotate(st + a / 2);
-    ctx.fillStyle = p[1]; ctx.font = '600 30px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif';
+    ctx.fillStyle = p[1]; ctx.font = '600 ' + fs + 'px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif';
     ctx.textAlign = "right"; ctx.textBaseline = "middle";
-    ctx.fillText(fitText(ctx, titles[i], R * .66), R - 24, 0);
+    ctx.fillText(fitText(ctx, titles[i], R * mw), R - 24, 0);
     ctx.restore();
   }
   ctx.beginPath(); ctx.arc(c, c, R, 0, Math.PI * 2); ctx.lineWidth = 6; ctx.strokeStyle = v("--line"); ctx.stroke();
@@ -385,6 +386,84 @@ function spin() {
 }
 
 
+// ---------- Takeout wheel ----------
+// Edit this list to add or change restaurants. Each one has exactly one type.
+const FOOD = [
+  ["Chick-fil-A","Chicken"],["Culver's","Burgers"],["McDonald's","Burgers"],
+  ["Little Cancun","Mexican"],["Bel Air Cantina","Mexican"],["Qdoba","Mexican"],
+  ["Panda Gourmet","Chinese"],["Panda Express","Chinese"],
+  ["Domino's","Pizza"],["Papa John's","Pizza"],
+  ["Cousins","Sandwiches"],["Jimmy John's","Sandwiches"],["Buona","Sandwiches"],["Panera Bread","Sandwiches"],["Arby's","Sandwiches"],
+  ["Texas Roadhouse","Steak"],["Noodles & Co","Noodles"]
+].map(([name, type]) => ({ name, type }));
+const FOOD_TYPES = [...new Set(FOOD.map(f => f.type))];
+let foodOut = new Set(), foodState = null;
+try { const w = JSON.parse(localStorage.getItem("foodOut")); if (Array.isArray(w)) foodOut = new Set(w.filter(x => FOOD.some(f => f.name === x))); } catch (e) {}
+const saveFoodOut = () => { try { localStorage.setItem("foodOut", JSON.stringify([...foodOut])); } catch (e) {} };
+const foodPool = () => FOOD.filter(f => !foodOut.has(f.name));
+const foodResultHTML = f => `<div class="result"><small>Tonight's pick</small><span class="title">${esc(f.name)}</span><small>${esc(f.type)}</small><div class="actions"><a class="btn primary" href="https://maps.apple.com/?q=${encodeURIComponent(f.name)}" target="_blank" rel="noopener noreferrer">Find nearby</a></div></div>`;
+
+function renderFood() {
+  backTo = "";
+  document.title = "Takeout wheel | Salerno Recipes";
+  const pool = foodPool(), byName = new Map(FOOD.map(f => [f.name, f]));
+  if (foodState && (foodState.segs.length !== pool.length || !foodState.segs.every(n => byName.has(n) && !foodOut.has(n)))) foodState = null;
+  if (!foodState && pool.length) foodState = { segs: shuffled(pool).map(f => f.name), rot: 0, winner: null };
+  const winner = foodState && foodState.winner ? byName.get(foodState.winner) : null;
+  const tchips = FOOD_TYPES.map(t => {
+    const on = FOOD.some(f => f.type === t && !foodOut.has(f.name));
+    return `<button class="chip${on ? "" : " out"}" data-ft="${esc(t)}" aria-pressed="${on}" aria-label="${esc(t)}: ${on ? "on the wheel" : "left out"}">${esc(t)}</button>`;
+  }).join("");
+  const rchips = FOOD.slice().sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" })).map(f => {
+    const on = !foodOut.has(f.name);
+    return `<button class="chip${on ? "" : " out"}" data-fr="${esc(f.name)}" aria-pressed="${on}" aria-label="${esc(f.name)}: ${on ? "on the wheel" : "left out"}">${esc(f.name)}</button>`;
+  }).join("");
+  app.innerHTML = `
+    <div class="top"><button class="back" data-a="back">‹ All recipes</button></div>
+    <h1 class="rtitle">Takeout wheel</h1>
+    ${pool.length
+      ? `<div class="wheelbox"><div class="ptr"></div><canvas id="fwheel" width="720" height="720" role="img" aria-label="Restaurant wheel"></canvas></div>`
+      : `<p class="empty">Nothing is left on the wheel. Tap a restaurant or type below to put it back.</p>`}
+    <div id="fres" aria-live="polite">${winner ? foodResultHTML(winner) : ""}</div>
+    <button class="btn primary spin" id="fspinbtn" data-a="fspin"${pool.length ? "" : " disabled"}>${winner ? "Spin again" : "Spin the wheel"}</button>
+    <h2>Types of food</h2><p class="hint">Tap a type to leave all of it out or put it back.</p><div class="wchips" style="margin-top:12px">${tchips}</div>
+    <h2>Restaurants</h2><p class="hint">Tap a restaurant to leave it out or put it back.</p><div class="wchips" style="margin-top:12px">${rchips}</div>
+    <div class="actions" style="margin-top:14px"><button class="btn" data-a="fall">Put everything back</button><button class="btn" data-a="fnone">Leave everything out</button></div>
+    <p class="count" style="margin-top:12px">${pool.length} ${pool.length === 1 ? "restaurant" : "restaurants"} in the mix</p>`;
+  if (pool.length) {
+    const cv = document.getElementById("fwheel");
+    drawWheel(cv, foodState.segs, pool.length > 12 ? 27 : 30, .72);
+    cv.style.transform = `rotate(${foodState.rot}deg)`;
+  }
+  saveUI();
+}
+
+function spinFood() {
+  if (spinning) return;
+  const cv = document.getElementById("fwheel");
+  if (!cv || !foodState || !foodState.segs.length) return;
+  const byName = new Map(FOOD.map(f => [f.name, f]));
+  const n = foodState.segs.length, size = 360 / n, i = rnd(n), winnerName = foodState.segs[i];
+  const landAt = (i + .5) * size + (Math.random() - .5) * size * .7;
+  const target = 360 * 5 + (((360 - landAt) % 360) + 360) % 360;
+  const dur = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches ? 600 : 4500;
+  cv.style.transition = "none"; cv.style.transform = "rotate(0deg)"; void cv.offsetWidth;
+  cv.style.transition = "transform " + dur + "ms cubic-bezier(.12,.7,.1,1)"; cv.style.transform = `rotate(${target}deg)`;
+  foodState.rot = target; foodState.winner = winnerName;
+  document.getElementById("fres").innerHTML = "";
+  document.getElementById("fspinbtn").disabled = true;
+  spinning = true;
+  spinTimer = setTimeout(() => {
+    spinning = false;
+    const res = document.getElementById("fres"), b = document.getElementById("fspinbtn");
+    if (!res || !b) return;
+    res.innerHTML = foodResultHTML(byName.get(winnerName));
+    b.disabled = false; b.textContent = "Spin again";
+    res.scrollIntoView({ block: "nearest" });
+  }, dur + 80);
+}
+
+
 // Opens the native share sheet (Messages, Mail, AirDrop, etc.). Falls back to copying the link.
 async function share(r) {
   const base = location.origin + location.pathname;
@@ -422,6 +501,17 @@ app.addEventListener("click", e => {
     const c = t.dataset.wcat; wheelOut.has(c) ? wheelOut.delete(c) : wheelOut.add(c);
     saveWheelOut(); wheelState = null; renderWheel(); return;
   }
+  if (t.dataset.fr) {
+    if (spinning) return;
+    const n = t.dataset.fr; foodOut.has(n) ? foodOut.delete(n) : foodOut.add(n);
+    saveFoodOut(); foodState = null; renderFood(); return;
+  }
+  if (t.dataset.ft) {
+    if (spinning) return;
+    const members = FOOD.filter(f => f.type === t.dataset.ft), anyOn = members.some(f => !foodOut.has(f.name));
+    members.forEach(f => anyOn ? foodOut.add(f.name) : foodOut.delete(f.name));
+    saveFoodOut(); foodState = null; renderFood(); return;
+  }
   if (t.dataset.cat) { const c = t.dataset.cat; if (c === "All") sel.clear(); else if (sel.has(c)) sel.delete(c); else sel.add(c); renderList(); return; }
   if (t.dataset.hide) { const id = t.dataset.hide; hidden.has(id) ? hidden.delete(id) : hidden.add(id); saveHidden(); renderList(); return; }
   if (t.dataset.fav) { const id = t.dataset.fav; favs.has(id) ? favs.delete(id) : favs.add(id); saveFavs(); renderList(); return; }
@@ -431,6 +521,10 @@ app.addEventListener("click", e => {
   else if (a === "back") { const b = backTo; backTo = ""; location.hash = b; }
   else if (a === "wheel") location.hash = "#wheel";
   else if (a === "spin") spin();
+  else if (a === "food") location.hash = "#food";
+  else if (a === "fspin") spinFood();
+  else if (a === "fall") { if (!spinning) { foodOut.clear(); saveFoodOut(); foodState = null; renderFood(); } }
+  else if (a === "fnone") { if (!spinning) { FOOD.forEach(f => foodOut.add(f.name)); saveFoodOut(); foodState = null; renderFood(); } }
   else if (a === "reshuffle") reshuffle();
   else if (a === "viewpick") { if (wheelState && wheelState.winner && !spinning) { backTo = "#wheel"; location.hash = "#r/" + encodeURIComponent(wheelState.winner); } }
   else if (a === "unhideall") { hidden.clear(); saveHidden(); renderList(); }
@@ -475,7 +569,7 @@ try {
   if (u && !(u.t && Date.now() - u.t > STALE_MS)) {
     query = u.q || "";
     (u.sel || []).forEach(c => sel.add(c));
-    if (!location.hash && typeof u.hash === "string" && /^#(wheel|r\/[^\s]*)$/.test(u.hash)) history.replaceState(null, "", u.hash);
+    if (!location.hash && typeof u.hash === "string" && /^#(wheel|food|r\/[^\s]*)$/.test(u.hash)) history.replaceState(null, "", u.hash);
     editing = !!u.editing && u.hash === location.hash;
   }
 } catch (e) {}
