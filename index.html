@@ -116,7 +116,7 @@ try { hidden = new Set(JSON.parse(localStorage.getItem("hidden") || "[]")); } ca
 let draft = null;
 try { draft = JSON.parse(localStorage.getItem("draft") || "null"); } catch (e) {}
 const saveUI = () => { try { localStorage.setItem("ui", JSON.stringify({ q: query, sel: [...sel], editing, hash: location.hash, t: Date.now() })); } catch (e) {} };
-const STALE_MS = 24 * 60 * 60 * 1000; // after this long away, start fresh on the home list
+const STALE_MS = 6 * 60 * 60 * 1000; // after this long away, start fresh on the home list
 const saveDraft = () => {
   const g = id => document.getElementById(id);
   if (!editing || !g("e-ing")) return;
