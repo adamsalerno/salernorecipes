@@ -193,7 +193,7 @@ function renderList() {
     const id = esc(r.id), t = esc(r.title);
     const main = `<button class="open" data-open="${id}"><span class="title">${t}</span><small>${esc((r.categories || []).join(", "))}</small></button>`;
     if (showHidden) return `<div class="row off">${main}<button class="tog" data-hide="${id}">Restore</button></div>`;
-    return `<div class="row">${main}<button class="heart" data-fav="${id}" aria-pressed="${favs.has(r.id)}" aria-label="Favorite ${t}">${favs.has(r.id) ? "♥" : "♡"}</button><button class="heart x" data-hide="${id}" aria-label="Hide ${t}">✕</button></div>`;
+    return `<div class="row">${main}<button class="heart" data-fav="${id}" aria-pressed="${favs.has(r.id)}" aria-label="Favorite ${t}">${favs.has(r.id) ? "♥" : "♡"}</button></div>`;
   }).join("") + "</div>";
   // Keep the search box (and keyboard) alive while typing: only rebuild it when missing.
   if (!document.getElementById("q")) {
@@ -246,14 +246,15 @@ function renderRecipe(r) {
       <button class="btn" data-a="fav" aria-pressed="${f}">${f ? "♥ Favorite" : "♡ Favorite"}</button>
       <button class="btn" data-a="copy">Copy ingredients</button>
       <button class="btn" data-a="edit">Edit</button>
-      <button class="btn" data-a="hide">${hidden.has(r.id) ? "Restore" : "Hide"}</button>
+      ${hidden.has(r.id) ? '<button class="btn" data-a="hide">Restore</button>' : ""}
     </div>
     <h2>Ingredients</h2>
     <ul class="ing">${(r.ingredients || []).map(i => `<li>${esc(i)}</li>`).join("")}</ul>
     <h2>Steps</h2>
     <ol class="steps">${(r.steps || []).map(s => `<li>${esc(s)}</li>`).join("")}</ol>
     ${r.notes ? `<div class="note">${esc(r.notes)}</div>` : ""}
-    ${url ? `<p class="src"><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">View the original</a></p>` : ""}`;
+    ${url ? `<p class="src"><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">View the original</a></p>` : ""}
+    ${hidden.has(r.id) ? "" : '<p class="src" style="margin-top:48px"><button class="btn" data-a="hide">Hide this recipe…</button></p>'}`;
 }
 
 
@@ -513,7 +514,7 @@ app.addEventListener("click", e => {
     saveFoodOut(); foodState = null; renderFood(); return;
   }
   if (t.dataset.cat) { const c = t.dataset.cat; if (c === "All") sel.clear(); else if (sel.has(c)) sel.delete(c); else sel.add(c); renderList(); return; }
-  if (t.dataset.hide) { const id = t.dataset.hide; hidden.has(id) ? hidden.delete(id) : hidden.add(id); saveHidden(); renderList(); return; }
+  if (t.dataset.hide) { const id = t.dataset.hide; if (hidden.has(id)) { hidden.delete(id); saveHidden(); renderList(); } return; }
   if (t.dataset.fav) { const id = t.dataset.fav; favs.has(id) ? favs.delete(id) : favs.add(id); saveFavs(); renderList(); return; }
   const a = t.dataset.a, r = recipes.find(x => x.id === currentId());
   if (a === "clearq") { query = ""; renderList(); document.getElementById("q").focus(); }
@@ -533,7 +534,7 @@ app.addEventListener("click", e => {
     if (!list.length) alert("No recipes are hidden yet.");
     else location.href = "sms:" + PHONE + "&body=" + encodeURIComponent(`Recipes to remove (${list.length}):\n` + list.map(x => `${x.id} | ${x.title}`).join("\n"));
   }
-  else if (a === "hide" && r) { if (hidden.has(r.id)) { hidden.delete(r.id); saveHidden(); render(); } else { hidden.add(r.id); saveHidden(); location.hash = ""; } }
+  else if (a === "hide" && r) { if (hidden.has(r.id)) { hidden.delete(r.id); saveHidden(); render(); } else if (confirm("Hide \u201c" + r.title + "\u201d from the list and search on this phone? You can restore it from the Hidden chip.")) { hidden.add(r.id); saveHidden(); location.hash = ""; } }
   else if (a === "fav" && r) { favs.has(r.id) ? favs.delete(r.id) : favs.add(r.id); saveFavs(); render(); }
   else if (a === "edit") { clearDraft(); editing = true; render(); window.scrollTo(0, 0); }
   else if (a === "cancel") { clearDraft(); editing = false; render(); }
